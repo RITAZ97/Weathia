@@ -2,7 +2,7 @@ import axios from "axios";
 const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 const ONE_CALL_URL = "https://api.openweathermap.org/data/3.0/onecall";
 const GEO_URL = "https://api.openweathermap.org/data/2.5";
-const GEOCODING_URL = "http://api.openweathermap.org/geo/1.0/direct"
+const GEOCODING_URL = "https://api.openweathermap.org/geo/1.0/direct"
 
 const weatherApi = {
   getWeatherData: async (city) => {
