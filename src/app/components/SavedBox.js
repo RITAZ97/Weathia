@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import AsyncSelect from 'react-select/async';
 
 const ConfirmModal = ({ isOpen, onClose, onConfirm, message, className }) => {
   if (!isOpen) return null;
@@ -56,6 +57,10 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
       const updated = [...savedCities, cityData];
       setSavedCities(updated);
       localStorage.setItem('weather_cities', JSON.stringify(updated));
+    } else {
+      const updated = savedCities.filter(city => city.name !== currentCity);
+      setSavedCities(updated);
+      localStorage.setItem('weather_cities', JSON.stringify(updated));
     }
     setIsModalOpen(false);
   };
@@ -109,13 +114,13 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
                   }}
                 >
                   <div className="flex items-center justify-between gap-4 overflow-hidden">
-                    <p className="text-[14px] sm:text-[16px] truncate w-24">
+                    <p className="text-[12px] sm:text-[14px] truncate w-24">
                       {cityObj.name}
                     </p>
                     <div className="flex items-center gap-6">
                       <img
                         src={`/icons/${cityObj.condition?.toLowerCase() || 'clear'}.svg`}
-                        className="w-5 h-5 object-contain"
+                        className="w-4 h-auto object-contain"
                         alt="weather"
                       />
                       <span className="text-xs sm:text-[14px] text-white/70">{cityObj.temp}°</span>
