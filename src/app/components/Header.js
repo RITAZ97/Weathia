@@ -22,12 +22,12 @@ const Header = ({ setLocation, weather, loading, setLoading, error }) => {
   return (
     <div className='w-full text-white mx-auto'>
       <div className="w-full flex justify-center bg-gradient-to-b from-[#48505C]/[0.79] from-[10%] via-[#59606B]/[0.5] via-[43%] via-[#7C828B]/[0.44] via-[60%] to-[#B7B3B3]/[0] to-[100%]">
-        <div className="w-[85%]">
+        <div className="w-[92%] sm:w-[85%]">
           <div className="flex justify-between items-center pt-5">
             <div className="flex gap-1 md:gap-2">
               <img src="/icons/weathia_logo.svg" className="w-5 h-5 md:w-7 h-auto object-contain" alt="logo" />
               <div className="flex">
-                <h3 className="text-[14px] md:text-[20px]">Weathia</h3>
+                <h3 className="text-[16px] md:text-[20px]">Weathia</h3>
               </div>
             </div>
             <SearchBar setLocation={setLocation} loading={loading} setLoading={setLoading} customClass='hidden sm:flex' onSelect={(city) => console.log(city)} />
@@ -70,7 +70,7 @@ const Header = ({ setLocation, weather, loading, setLoading, error }) => {
           <div className="hidden w-full md:flex justify-center items-center my-14">
             <div className="flex items-center gap-30">
               <div className="flex gap-2 items-center">
-                <img src="/icons/locate_icon.svg" className="w-4 h-auto object-contain" alt="location" />
+                <img src="/icons/locate_icon.svg" className="w-3 sm:w-4 h-auto object-contain" alt="location" />
                 <p className="text-[18px] font-semibold">{weather.name}, {weather.sys?.country}</p>
               </div>
               <div className="flex flex-col gap-3 justify-center items-center">
@@ -86,23 +86,23 @@ const Header = ({ setLocation, weather, loading, setLoading, error }) => {
           </div>
 
           <div className="md:hidden flex justify-between items-center py-10">
-            <div className="flex gap-2 items-end">
+            <div className="flex gap-2 items-baseline">
               <img src="/icons/locate_icon.svg" className="w-4 h-auto object-contain" alt="location" />
-              <h2 className="">{weather.name || "Unknown City"}</h2>
+              <h2 className="text-[18px]">{weather.name || "Unknown City"}</h2>
             </div>
             <div className="flex items-end">
-              <p className="">{formatDate(weather.current.dt, weather.timezone_offset)}</p>
+              <h3 className="">{formatDate(weather.current.dt, weather.timezone_offset)}</h3>
             </div>
           </div>
         </div>
       </div>
 
       <div className="md:hidden w-full flex justify-center">
-        <div className="w-[85%]">
+        <div className="w-[92%] sm:w-[85%]">
           <div className="flex gap-3 items-end">
             <h1 className="text-support2 leading-none drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">{formatTemperature(weather.current.temp)}</h1>
             <div className="bg-[#6C6F75]/45 backdrop-blur-[8px] w-[70px] h-[27px] mb-[4px] rounded-full flex justify-center items-center">
-              <p className="">{weather.current.weather[0].main}</p>
+              <h3 className="">{weather.current.weather[0].main}</h3>
             </div>
           </div>
         </div>

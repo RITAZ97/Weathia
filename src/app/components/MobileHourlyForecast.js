@@ -27,8 +27,8 @@ const MobileHourlyForecast = ({ weather }) => {
 
   return (
     <div className="flex justify-center items-center mx-auto">
-      <div className="w-full max-w-[300px] flex justify-center items-center py-3">
-        <div className="flex w-full overflow-x-auto snap-x snap-mandatory no-scrollbar">
+      <div className="w-full max-w-[340px] flex justify-center items-center py-3">
+        <div className="flex w-full overflow-x-auto snap-x snap-mandatory no-scrollbar pb-1">
           {hourlyData.map((item, id) => (
             <div
               key={id}
@@ -42,9 +42,9 @@ const MobileHourlyForecast = ({ weather }) => {
                 />
               </div>
               <div className="flex flex-col items-center gap-0.5">
-                <p className="text-ternary font-medium uppercase">
+                <h3 className="text-ternary font-medium uppercase">
                   {item.displayTime}
-                </p>
+                </h3>
                 <h2 className="text-ternary font-semibold">
                   {item.temp}°
                 </h2>
