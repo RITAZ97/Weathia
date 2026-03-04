@@ -1,6 +1,5 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import AsyncSelect from 'react-select/async';
 
 const ConfirmModal = ({ isOpen, onClose, onConfirm, message, className }) => {
   if (!isOpen) return null;

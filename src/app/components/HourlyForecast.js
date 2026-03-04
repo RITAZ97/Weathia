@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const HourlyForecast = ({ weatherData = [], weather }) => {
   const [startIndex, setStartIndex] = useState(0);
@@ -18,11 +18,15 @@ const HourlyForecast = ({ weatherData = [], weather }) => {
     if (weatherMain === 'clear') {
       iconName = isDaylight ? 'clear-day' : 'clear-night';
     }
-
+    const timezoneOffset = weather.timezone_offset || 0;
     return {
       ...item,
       iconName: iconName,
-      displayTime: new Date(item.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      displayTime: new Date((item.dt + timezoneOffset) * 1000).toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'UTC' // 必须用 UTC，因为我们已经手动加上了偏移量
+      }),
       temp: Math.round(item.temp)
     };
   }) || [];
@@ -30,7 +34,8 @@ const HourlyForecast = ({ weatherData = [], weather }) => {
   useEffect(() => {
     if (weatherData.length === 0) return;
 
-    const currentHour = new Date().getHours();
+    const targetDate = new Date((Date.now() / 1000 + weather.timezone_offset) * 1000);
+    const currentHour = targetDate.getUTCHours();
 
     const currentIndex = weatherData.findIndex(item => {
       const hourPart = parseInt(item.time.split(':')[0]);
