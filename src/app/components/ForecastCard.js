@@ -3,7 +3,7 @@ import React from 'react';
 import { getWeekday } from '@/utils/temp_date';
 import MobileHourlyForecast from './MobileHourlyForecast';
 
-const ForecastCard = ({ weather, highlight }) => {
+const ForecastCard = ({ weather }) => {
 
   return (
     <div className="sm:hidden w-[92%] mx-auto ">

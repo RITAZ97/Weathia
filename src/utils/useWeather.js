@@ -1,3 +1,4 @@
+'use client';
 import { useState, useEffect } from "react";
 import weatherApi from "./weatherApi";
 import { getWeekday } from "./temp_date";
@@ -9,38 +10,33 @@ const useWeather = (initialLocation = "Melbourne,AU") => {
   const [location, setLocation] = useState(initialLocation);
   const [forecast, setForecast] = useState(null);
   const [highLights, setHighLights] = useState(null);
-  const [cities, setCities] = useState(["London", "Tokyo"]);
+  const [cities, setCities] = useState([]);
   const [citiesWeather, setCitiesWeather] = useState([]);
-  const [loading, setLoading] = useState({
-    weather: true,
-    forecast: true,
-    cities: true,
-  });
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchMainWeatherData = async () => {
     if (!location) return;
     try {
       setError(null);
-      setLoading(prev => ({ ...prev, weather: true, forecast: true }));
+      setLoading(true);
       const weatherData = await weatherApi.getWeatherData(location);
       if (weatherData) {
         setWeather(weatherData);
-        setForecast(processSevenDayForecast(weatherData.daily));
+        setForecast(weatherData.daily);
         setHighLights(processHighlights(weatherData));
       }
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(prev => ({ ...prev, weather: false, forecast: false }));
+      setLoading(false);
     }
   };
 
   const processHighlights = (weatherData) => {
-    const { current, daily, hourly } = weatherData;
+    const { current, daily } = weatherData;
     const today = daily[0];
     const tomorrow = daily[1];
-    const rainPop = (today.pop * 100).toFixed(0);
 
     const getUVDescription = (uv) => {
       if (uv <= 2) return "Low";      
@@ -66,33 +62,33 @@ const useWeather = (initialLocation = "Melbourne,AU") => {
       tomorrowMax: Math.round(tomorrow.temp.max),
       tomorrowMin: Math.round(tomorrow.temp.min),
       currentTime: formatHour(current.dt),
-      rainChance: rainPop,
+      rainChance: (today.pop * 100).toFixed(0)
     };
   };
 
-  const processSevenDayForecast = (dailyData) => {
-    return dailyData.slice(1, 8).map((day) => {
-      const date = new Date(day.dt * 1000);
-      return {
-        dayName: date.toLocaleDateString("en-US", { weekday: "long" }),
-        maxTemp: Math.round(day.temp.max),
-        minTemp: Math.round(day.temp.min),
-        icon: day.weather[0].icon,
-        condition: day.weather[0].main,
-      };
-    });
-  };
+  // const processSevenDayForecast = (dailyData) => {
+  //   return dailyData.slice(1, 8).map((day) => {
+  //     const date = new Date(day.dt * 1000);
+  //     return {
+  //       dayName: date.toLocaleDateString("en-US", { weekday: "long" }),
+  //       maxTemp: Math.round(day.temp.max),
+  //       minTemp: Math.round(day.temp.min),
+  //       icon: day.weather[0].icon,
+  //       condition: day.weather[0].main,
+  //     };
+  //   });
+  // };
 
   const fetchCitiesWeatherData = async () => {
     try {
-      setLoading((prev) => ({ ...prev, cities: true }));
+      setLoading(true);
       const cityWeatherData = await weatherApi.getMultipleCitiesWeather(cities);
       setCitiesWeather(cityWeatherData);
     } catch (error) {
       setError(error.message);
       console.error("Error fetching cities weather: ", error);
     } finally {
-      setLoading((prev) => ({ ...prev, cities: false }));
+      setLoading(false);
     }
   };
 

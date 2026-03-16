@@ -8,7 +8,7 @@ import DynamicBg from "./components/DynamicBg";
 import useWeather from "@/utils/useWeather";
 
 export default function Home() {
-  const { weather, setLocation, loading, setLoading, highLights, error } = useWeather();
+  const { weather, setLocation, loading, highLights, error } = useWeather();
 
   return (
     <main className="relative w-full min-h-screen overflow-x-hidden">
@@ -23,7 +23,7 @@ export default function Home() {
           loading={loading}
           error={error}
           setLocation={setLocation}
-          setLoading={setLocation}
+          // setLoading={setLocation}
         />
         <WeatherDashboard
           weather={weather}

@@ -1,11 +1,10 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 
-const ConfirmModal = ({ isOpen, onClose, onConfirm, message, className }) => {
+const ConfirmModal = ({ isOpen, onClose, onConfirm, message}) => {
   if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-[9999]">
+    <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-[999]">
       <div className="bg-[#3a3737] text-white px-6 py-8 rounded-lg text-center max-w-[420px] shadow-xl border border-white/10">
         <p className="mb-6 text-sm md:text-base">{message}</p>
         <div className="flex gap-3 justify-center">
@@ -49,8 +48,8 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
 
       const cityData = {
         name: currentCity,
-        temp: Math.round(weather?.main?.temp || weather?.current?.temp || 0),
-        condition: mainCondition || 'Clouds'
+        temp: Math.round(weather?.main?.temp || weather?.current?.temp || 'Unknown'),
+        condition: mainCondition || 'Unknown'
       };
 
       const updated = [...savedCities, cityData];
@@ -101,19 +100,21 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
 
       <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20">
         {isListOpen && (
-          <div className="absolute top-12 right-0 bg-[#222]/55 backdrop-blur-sm min-w-[280px] rounded-lg border border-white/10 shadow-2xl z-[100] overflow-hidden">
+          <div className="absolute top-12 right-0 bg-[#222]/55 backdrop-blur-sm min-w-[280px] rounded-lg border
+           border-white/10 shadow-2xl z-[100] overflow-hidden">
             {savedCities.length > 0 ? (
               savedCities.map((cityObj, index) => (
                 <div
                   key={index}
-                  className="px-4 py-3 cursor-pointer flex justify-between items-center hover:bg-white/10 transition-colors border-b border-white/5 last:border-none text-white/90"
+                  className="px-4 py-3 cursor-pointer flex justify-between items-center hover:bg-white/10 transition-colors 
+                  border-b border-white/5 last:border-none text-white/90"
                   onClick={() => {
                     onSelectCity(cityObj.name);
                     setIsListOpen(false);
                   }}
                 >
                   <div className="flex items-center justify-between gap-4 overflow-hidden">
-                    <p className="text-[12px] sm:text-[14px] truncate w-24">
+                    <p className="text-[14px] truncate w-26">
                       {cityObj.name}
                     </p>
                     <div className="flex items-center gap-6">
@@ -122,7 +123,7 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
                         className="w-4 h-auto object-contain"
                         alt="weather"
                       />
-                      <span className="text-xs sm:text-[14px] text-white/70">{cityObj.temp}°</span>
+                      <span className="text-[14px] text-white/70">{cityObj.temp}°</span>
                     </div>
                   </div>
                   <div
@@ -135,7 +136,7 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
                     className="text-white/60 hover:text-[#ff4d4d] transition-colors text-xl leading-none ml-2 px-1"
                   >
                     <svg
-                      className="w-4 h-4"
+                      className="w-5 h-5"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"

@@ -1,10 +1,3 @@
-export const convertTemperature = (temp, unit) => {
-  if (unit === "C") {
-    return ((temp - 32) * 5) / 9;
-  }
-  return temp;
-};
-
 export const formatTemperature = (temp, unit = "°") => {
   return `${Math.round(temp)}${unit}`;
 };
@@ -39,11 +32,13 @@ export const getWeekday = (timestamp, dayOffset = 0) => {
   });
 };
 
-export const formatHour = (timestamp) => {
-  const date = new Date(timestamp * 1000);
+export const formatHour = (timestamp, timezoneOffset = 0) => {
+  const date = new Date((timestamp + timezoneOffset) * 1000);
+
   return date.toLocaleTimeString('en-GB', {
     hour: '2-digit',
     minute: '2-digit',
-    hour12: false
+    hour12: false,
+    timeZone: 'UTC'
   });
 };

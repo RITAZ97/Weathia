@@ -16,10 +16,15 @@ const MobileHourlyForecast = ({ weather }) => {
     if (weatherMain === 'clear') {
       iconName = isDaylight ? 'clear-day' : 'clear-night';
     }
+    const timezoneOffset = weather.timezone_offset || 0;
 
     return {
       ...item,
-      displayTime: index === 0 ? "Now" : itemDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      displayTime: new Date((item.dt + timezoneOffset) * 1000).toLocaleTimeString('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'UTC'
+      }),
       temp: Math.round(item.temp),
       iconName: iconName
     };

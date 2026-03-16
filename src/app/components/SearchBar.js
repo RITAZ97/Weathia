@@ -2,16 +2,13 @@
 import React, { useState, useRef } from 'react';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 
-const libraries = ['places']; 
-
 const SearchBar = ({ setLocation, onSelect, customClass = "" }) => {
   const [query, setQuery] = useState("");
   const autocompleteRef = useRef(null);
-
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY, 
-    libraries: libraries,
+    libraries: ['places'],
   });
 
   const onPlaceChanged = () => {
@@ -31,6 +28,7 @@ const SearchBar = ({ setLocation, onSelect, customClass = "" }) => {
       }
     }
   };
+  
   const onLoad = (autocomplete) => {
     autocompleteRef.current = autocomplete;
   };

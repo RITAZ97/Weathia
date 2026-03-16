@@ -32,7 +32,7 @@ const WeatherDashboard = ({ weather, highLights}) => {
               </div>
             </div>
           </div>
-          <div className="w-full flex justify-between items-center">
+          <div className="w-full flex justify-between items-stretch h-[100px]">
             <div className="w-[30%] xl:w-[28%] aspect-[33/25] bg-[#BCC0C7]/50 backdrop-blur-[8px] rounded-[10px] p-3">
               <div className="flex flex-col gap-[10px] items-center">
                 <div className="flex gap-1 justify-center items-center">
@@ -69,7 +69,7 @@ const WeatherDashboard = ({ weather, highLights}) => {
               </div>
             </div>
           </div>
-          <div className="w-full flex justify-between items-center mt-[30px]">
+          <div className="w-full flex justify-between items-stretch h-[100px] mt-[30px]">
             <div className="w-[30%] aspect-[33/25] xl:w-[28%] bg-[#BCC0C7]/50 backdrop-blur-[8px] rounded-[10px] p-3">
               <div className="flex flex-col gap-[22px] justify-center">
                 <div className="flex justify-center  items-center gap-2">

@@ -35,9 +35,7 @@ const weatherApi = {
         sys: { country }
       };
     } catch (error) {
-      console.log(error);
       console.log("error message:", error.message);
-
       throw new Error(error.response?.data?.message || "Failed to fetch weather data");
     }
   },

@@ -25,7 +25,7 @@ const HourlyForecast = ({ weatherData = [], weather }) => {
       displayTime: new Date((item.dt + timezoneOffset) * 1000).toLocaleTimeString('en-GB', {
         hour: '2-digit',
         minute: '2-digit',
-        timeZone: 'UTC' // 必须用 UTC，因为我们已经手动加上了偏移量
+        timeZone: 'UTC' 
       }),
       temp: Math.round(item.temp)
     };
@@ -93,7 +93,7 @@ const HourlyForecast = ({ weatherData = [], weather }) => {
                   />
                 </div>
                 <div className="flex flex-col justify-center items-center pt-2">
-                  <p className="text-primary font-normal text-[13px]">{id === 0 ? "Now" : item.displayTime}</p>
+                  <p className="text-primary font-normal text-[14px]">{id === 0 ? "Now" : item.displayTime}</p>
                   <h2 className="text-primary font-semibold">{item.temp}°</h2>
                 </div>
               </div>
