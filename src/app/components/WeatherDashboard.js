@@ -2,33 +2,25 @@ import React from 'react'
 import HourlyForecast from './HourlyForecast';;
 import { getWeekday } from '@/utils/temp_date';
 
-const WeatherDashboard = ({ weather, highLights}) => {
+const WeatherDashboard = ({ weather, highLights }) => {
 
   return (
-    <div className="hidden mx-auto md:block w-[85%] max-w-[1320px] h-[668px] bg-[#6C6F75]/45 backdrop-blur-[8px] rounded-[25px]">
+    <div className="hidden mx-auto sm:block w-[92%] lg:w-[85%] max-w-[1320px] h-[668px] bg-[#6C6F75]/45 backdrop-blur-[8px] rounded-[25px]">
       <div className="w-full h-100 flex justify-between items-start px-8  xl:px-15 py-8">
         <div className="w-[45%] xl:w-[40%] h-full">
           <p className="text-[20px] text-center font-semibold ">Today's Highlight</p>
           <div className="w-full h-[50px] flex justify-center items-center bg-[#BCC0C7]/50 backdrop-blur-[8px] rounded-full mt-7 mb-[55px]">
-            <div className="flex gap-3 xl:gap-4 items-center">
-              <h3 className="text-white text-[14px] lg:text-[16px]">Today</h3>
-              <div className="flex gap-1 justify-center items-center">
-                <img src="/icons/up.svg" className="w-2 h-auto object-contain " alt="arrow_up" />
-                <p className="text-[14px] lg:text-[16px]">{highLights?.todayMax}℃</p>
-              </div>
-              <div className="flex gap-1 items-center">
-                <img src="/icons/down.svg" className="w-2 h-auto object-contain " alt="arrow_up" />
-                <p className="text-[14px] lg:text-[16px]">{highLights?.todayMin}℃</p>
+            <div className="flex gap-2 xl:gap-4 items-center">
+              <h3 className="text-white text-[12px] md:text-[14px] lg:text-[16px]">Today</h3>
+              <div className="flex ">
+                <p className="text-[12px] md:text-[14px] lg:text-[16px]">{highLights?.todayMax}/</p>
+                <p className="text-[12px] md:text-[14px] lg:text-[16px]"> {highLights?.todayMin}℃</p>
               </div>
               <div className="w-[1.5px] h-6 bg-white items" />
-              <h3 className="text-white text-[14px] lg:text-[16px]">{highLights?.tomorrowName}</h3>
-              <div className="flex gap-1 items-center">
-                <img src="/icons/up.svg" className="w-2 h-auto object-contain " alt="arrow_down" />
-                <p className="text-[14px] lg:text-[16px]">{highLights?.tomorrowMax}℃</p>
-              </div>
-              <div className="flex gap-1 items-center">
-                <img src="/icons/down.svg" className="w-2 h-auto object-contain " alt="arrow_up" />
-                <p className="text-[14px] lg:text-[16px]">{highLights?.tomorrowMin}℃</p>
+              <h3 className="text-white text-[12px] md:text-[14px] lg:text-[16px]">{highLights?.tomorrowName}</h3>
+              <div className="flex ">
+                <p className="text-[12px] md:text-[14px] lg:text-[16px]">{highLights?.tomorrowMax}/</p>
+                <p className="text-[12px] md:text-[14px] lg:text-[16px]"> {highLights?.tomorrowMin}℃</p>
               </div>
             </div>
           </div>
@@ -40,8 +32,8 @@ const WeatherDashboard = ({ weather, highLights}) => {
                   <h2 className="">{highLights?.currentTime}</h2>
                 </div>
                 <div className="text-center">
-                  <p className="text-[12px] lg:text-[14px]">Chance of rain</p>
-                  <p className="text-[14px] lg:text-[16px]">{highLights?.rainChance} %</p>
+                  <p className="text-[12px] lg:text-[14px]">Rain %</p>
+                  <p className="text-[14px] lg:text-[16px]">{highLights?.rainChance} </p>
                 </div>
               </div>
             </div>
@@ -52,8 +44,8 @@ const WeatherDashboard = ({ weather, highLights}) => {
                   <h3 className="font-semibold">Wind</h3>
                 </div>
                 <div className="text-center">
-                  <p className="text-[14px]">Wind speed</p>
-                  <p className="text-[16px]">{highLights?.wind} m/s</p>
+                  <p className="text-[12px] lg:text-[14px]">Wind speed</p>
+                  <p className="text-[14px] lg:text-[16px]">{highLights?.wind} m/s</p>
                 </div>
               </div></div>
             <div className="w-[30%] xl:w-[28%] aspect-[33/25] bg-[#BCC0C7]/50 backdrop-blur-[8px] rounded-[10px] p-3">
@@ -74,10 +66,10 @@ const WeatherDashboard = ({ weather, highLights}) => {
               <div className="flex flex-col gap-[22px] justify-center">
                 <div className="flex justify-center  items-center gap-2">
                   <img src="/icons/humidity.svg" className="w-3 h-auto object-contain" alt="humidity" />
-                  <h3 className="font-semibold">Humidity</h3>
+                  <h3 className="text-[12px] lg:text-[14px] font-semibold">Humidity</h3>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-[16px] lg:text-[20px]">{highLights?.humidity} %</h3>
+                  <h3 className="text-[14px] lg:text-[20px]">{highLights?.humidity} %</h3>
                 </div>
               </div>
             </div>
@@ -85,20 +77,20 @@ const WeatherDashboard = ({ weather, highLights}) => {
               <div className="flex flex-col gap-[22px] justify-center">
                 <div className="flex justify-center  items-center gap-1">
                   <img src="/icons/visibility.svg" className="w-5 h-auto object-contain" alt="visibility" />
-                  <h3 className="font-semibold">Visibility</h3>
+                  <h3 className="text-[12px] lg:text-[14px] font-semibold">Visibility</h3>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-[16px] lg:text-[20px]">{highLights?.visibility} km</h3>
+                  <h3 className="text-[14px] lg:text-[20px]">{highLights?.visibility} km</h3>
                 </div>
               </div></div>
             <div className="w-[30%] aspect-[33/25] xl:w-[28%] bg-[#BCC0C7]/50 backdrop-blur-[8px] rounded-[10px] p-3">
               <div className="flex flex-col gap-[22px] justify-center">
                 <div className="flex justify-center  items-center gap-2">
                   <img src="/icons/pressure.svg" className="w-5 h-auto object-contain" alt="pressure" />
-                  <h3 className="font-semibold">Pressure</h3>
+                  <h3 className="text-[12px] lg:text-[14px] font-semibold">Pressure</h3>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-[16px] lg:text-[20px]">{highLights?.pressure} hPa</h3>
+                  <h3 className="text-[14px] lg:text-[20px]">{highLights?.pressure} hPa</h3>
                 </div>
               </div>
             </div>
@@ -132,7 +124,7 @@ const WeatherDashboard = ({ weather, highLights}) => {
           ))}
         </div>
       </div>
-      <HourlyForecast weather={weather}/>
+      <HourlyForecast weather={weather} />
     </div>
   )
 }

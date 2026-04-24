@@ -5,7 +5,7 @@ import { getWeekday } from "./temp_date";
 import { formatHour } from "./temp_date";
 const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 
-const useWeather = (initialLocation = "Melbourne,AU") => {
+const useWeather = (initialLocation: string = "Melbourne,AU") => {
   const [weather, setWeather] = useState(null);
   const [location, setLocation] = useState(initialLocation);
   const [forecast, setForecast] = useState(null);
@@ -65,19 +65,6 @@ const useWeather = (initialLocation = "Melbourne,AU") => {
       rainChance: (today.pop * 100).toFixed(0)
     };
   };
-
-  // const processSevenDayForecast = (dailyData) => {
-  //   return dailyData.slice(1, 8).map((day) => {
-  //     const date = new Date(day.dt * 1000);
-  //     return {
-  //       dayName: date.toLocaleDateString("en-US", { weekday: "long" }),
-  //       maxTemp: Math.round(day.temp.max),
-  //       minTemp: Math.round(day.temp.min),
-  //       icon: day.weather[0].icon,
-  //       condition: day.weather[0].main,
-  //     };
-  //   });
-  // };
 
   const fetchCitiesWeatherData = async () => {
     try {
