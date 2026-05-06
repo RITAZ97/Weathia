@@ -1,7 +1,13 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
+import { WeatherData } from '@/types/weather';
 
-const HourlyForecast = ({ weatherData = [], weather }) => {
+interface HourlyForecastProps {
+  weather: WeatherData | null;
+  weatherData?: any[];
+}
+
+const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) => {
   const [startIndex, setStartIndex] = useState(0);
   const displayCount = 12;
   const hourlyData = weather?.hourly?.slice(0, 24).map((item) => {
@@ -32,9 +38,9 @@ const HourlyForecast = ({ weatherData = [], weather }) => {
   }) || [];
 
   useEffect(() => {
-    if (weatherData.length === 0) return;
+    if (weatherData.length === 0 || !weather) return;
 
-    const targetDate = new Date((Date.now() / 1000 + weather.timezone_offset) * 1000);
+    const targetDate = new Date((Date.now() / 1000 + (weather.timezone_offset ?? 0)) * 1000);
     const currentHour = targetDate.getUTCHours();
 
     const currentIndex = weatherData.findIndex(item => {
@@ -85,15 +91,15 @@ const HourlyForecast = ({ weatherData = [], weather }) => {
                 key={id}
                 className="flex-none w-[8.333333%] flex flex-col items-center group"
               >
-                <div className="w-12 h-12 rounded-full bg-support2 flex justify-center items-center">
+                <div className="w-12 h-8 lg:h-12 rounded-full bg-transparent lg:bg-support2 flex justify-center items-center">
                   <img
                     src={`/icons/${item.iconName}.svg`}
                     className="w-5 h-auto object-contain"
                     alt={item.weather[0].description}
                   />
                 </div>
-                <div className="flex flex-col justify-center items-center pt-2">
-                  <p className="text-primary font-normal text-[14px]">{id === 0 ? "Now" : item.displayTime}</p>
+                <div className="flex flex-col justify-center items-center lg:pt-2">
+                  <p className="text-primary font-normal text-[12px] lg:text-[14px]">{id === 0 ? "Now" : item.displayTime}</p>
                   <h2 className="text-primary font-semibold">{item.temp}°</h2>
                 </div>
               </div>

@@ -3,17 +3,19 @@ import { useState, useEffect } from "react";
 import weatherApi from "./weatherApi";
 import { getWeekday } from "./temp_date";
 import { formatHour } from "./temp_date";
+import { Interface } from "readline";
 const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
+import { WeatherData, WeatherHighlights, DailyForecast } from "@/types/weather";
 
-const useWeather = (initialLocation = "Melbourne,AU") => {
-  const [weather, setWeather] = useState(null);
-  const [location, setLocation] = useState(initialLocation);
-  const [forecast, setForecast] = useState(null);
-  const [highLights, setHighLights] = useState(null);
-  const [cities, setCities] = useState([]);
-  const [citiesWeather, setCitiesWeather] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const useWeather = (initialLocation: string = "Melbourne,AU") => {
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [location, setLocation] = useState<string>(initialLocation);
+  const [forecast, setForecast] = useState<any[] | null>(null);;
+  const [highLights, setHighLights] = useState<WeatherHighlights | null>(null);
+  const [cities, setCities] = useState<string[]>([]);
+  const [citiesWeather, setCitiesWeather] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchMainWeatherData = async () => {
     if (!location) return;
@@ -26,24 +28,24 @@ const useWeather = (initialLocation = "Melbourne,AU") => {
         setForecast(weatherData.daily);
         setHighLights(processHighlights(weatherData));
       }
-    } catch (error) {
+    } catch (error: any) {
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const processHighlights = (weatherData) => {
+  const processHighlights = (weatherData: WeatherData): WeatherHighlights => {
     const { current, daily } = weatherData;
     const today = daily[0];
     const tomorrow = daily[1];
 
-    const getUVDescription = (uv) => {
-      if (uv <= 2) return "Low";      
-      if (uv <= 5) return "Moderate";  
-      if (uv <= 7) return "High";      
+    const getUVDescription = (uv: number): string => {
+      if (uv <= 2) return "Low";
+      if (uv <= 5) return "Moderate";
+      if (uv <= 7) return "High";
       if (uv <= 10) return "Very High";
-      return "Extreme";                
+      return "Extreme";
     };
 
     return {
@@ -52,7 +54,7 @@ const useWeather = (initialLocation = "Melbourne,AU") => {
       humidity: current.humidity,
       feels_like: current.feels_like,
       weather: current.weather[0].main,
-      visibility: (current.visibility / 1000).toFixed(1),
+      visibility: (Number(current.visibility) / 1000).toFixed(1),
       pressure: current.pressure,
       uv: current.uvi,
       uvText: getUVDescription(current.uvi),
@@ -66,25 +68,12 @@ const useWeather = (initialLocation = "Melbourne,AU") => {
     };
   };
 
-  // const processSevenDayForecast = (dailyData) => {
-  //   return dailyData.slice(1, 8).map((day) => {
-  //     const date = new Date(day.dt * 1000);
-  //     return {
-  //       dayName: date.toLocaleDateString("en-US", { weekday: "long" }),
-  //       maxTemp: Math.round(day.temp.max),
-  //       minTemp: Math.round(day.temp.min),
-  //       icon: day.weather[0].icon,
-  //       condition: day.weather[0].main,
-  //     };
-  //   });
-  // };
-
   const fetchCitiesWeatherData = async () => {
     try {
       setLoading(true);
       const cityWeatherData = await weatherApi.getMultipleCitiesWeather(cities);
       setCitiesWeather(cityWeatherData);
-    } catch (error) {
+    } catch (error: any) {
       setError(error.message);
       console.error("Error fetching cities weather: ", error);
     } finally {

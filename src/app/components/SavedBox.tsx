@@ -1,7 +1,37 @@
-"use client"
+"use client";
+
 import React, { useState, useEffect } from 'react';
 
-const ConfirmModal = ({ isOpen, onClose, onConfirm, message}) => {
+interface CityData {
+  name: string;
+  temp: number | string;
+  condition: string;
+}
+
+interface ConfirmModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  message: string;
+}
+
+interface WeatherData {
+  main?: { temp: number };
+  weather?: Array<{ main: string }>;
+  current?: {
+    temp: number;
+    weather: Array<{ main: string }>;
+  };
+}
+
+interface SavedBoxProps {
+  currentCity: string;
+  onSelectCity: (cityName: string) => void;
+  weather: WeatherData | null;
+  className?: string;
+}
+
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm, message }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-[999]">
@@ -26,10 +56,10 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, message}) => {
   );
 };
 
-const SavedBox = ({ currentCity, onSelectCity, weather }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isListOpen, setIsListOpen] = useState(false);
-  const [savedCities, setSavedCities] = useState([]);
+const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather }) => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isListOpen, setIsListOpen] = useState<boolean>(false);
+  const [savedCities, setSavedCities] = useState<CityData[]>([]);
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('weather_cities') || '[]');
@@ -45,10 +75,11 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
   const toggleCity = () => {
     if (!isFavorited) {
       const mainCondition = weather?.weather?.[0]?.main || weather?.current?.weather?.[0]?.main;
+      const rawTemp = weather?.main?.temp ?? weather?.current?.temp;
 
-      const cityData = {
+      const cityData: CityData = {
         name: currentCity,
-        temp: Math.round(weather?.main?.temp || weather?.current?.temp || 'Unknown'),
+        temp: typeof rawTemp === 'number' ? Math.round(rawTemp) : 'Unknown',
         condition: mainCondition || 'Unknown'
       };
 
@@ -78,15 +109,17 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
           <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
         </svg>
       </button>
+
       <button className="hover:opacity-70 transition-opacity" onClick={() => setIsListOpen(!isListOpen)}>
-        <img src={isListOpen ? "/icons/close.svg" : "/icons/menu_icon.svg"} className={`
-      cursor-pointer transition-all object-contain
-      ${isListOpen
-            ? "w-4 h-auto sm:w-5 h-auto"
-            : "w-5 h-auto sm:w-6"
-          }
-    `} alt="menu" />
+        <img 
+          src={isListOpen ? "/icons/close.svg" : "/icons/menu_icon.svg"} 
+          className={`cursor-pointer transition-all object-contain ${
+            isListOpen ? "w-4 h-auto sm:w-5" : "w-5 h-auto sm:w-6"
+          }`} 
+          alt="menu" 
+        />
       </button>
+
       <ConfirmModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -98,22 +131,20 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
         }
       />
 
-      <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20">
-        {isListOpen && (
-          <div className="absolute top-12 right-0 bg-[#222]/55 backdrop-blur-sm min-w-[280px] rounded-lg border
-           border-white/10 shadow-2xl z-[100] overflow-hidden">
+      {isListOpen && (
+        <div className="absolute top-12 right-0 bg-[#222]/55 backdrop-blur-sm min-w-[280px] rounded-lg border border-white/10 shadow-2xl z-[100] overflow-hidden">
+          <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20">
             {savedCities.length > 0 ? (
               savedCities.map((cityObj, index) => (
                 <div
-                  key={index}
-                  className="px-4 py-3 cursor-pointer flex justify-between items-center hover:bg-white/10 transition-colors 
-                  border-b border-white/5 last:border-none text-white/90"
+                  key={`${cityObj.name}-${index}`}
+                  className="px-4 py-3 cursor-pointer flex justify-between items-center hover:bg-white/10 transition-colors border-b border-white/5 last:border-none text-white/90"
                   onClick={() => {
                     onSelectCity(cityObj.name);
                     setIsListOpen(false);
                   }}
                 >
-                  <div className="flex items-center justify-between gap-4 overflow-hidden">
+                  <div className="flex items-center justify-between gap-4 overflow-hidden flex-1">
                     <p className="text-[14px] truncate w-26">
                       {cityObj.name}
                     </p>
@@ -126,8 +157,9 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
                       <span className="text-[14px] text-white/70">{cityObj.temp}°</span>
                     </div>
                   </div>
+                  
                   <div
-                    onClick={(e) => {
+                    onClick={(e: React.MouseEvent) => {
                       e.stopPropagation();
                       const updated = savedCities.filter(c => c.name !== cityObj.name);
                       setSavedCities(updated);
@@ -153,8 +185,8 @@ const SavedBox = ({ currentCity, onSelectCity, weather }) => {
               </div>
             )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,7 +1,12 @@
 "use client";
 import React from 'react';
+import { WeatherData } from '@/types/weather';
 
-const MobileHourlyForecast = ({ weather }) => {
+interface MobileHourlyForecastProps {
+  weather: WeatherData | null;
+  weatherData?: any[];
+}
+const MobileHourlyForecast: React.FC<MobileHourlyForecastProps> = ({ weather }) => {
   const hourlyData = weather?.hourly?.slice(0, 24).map((item, index) => {
     const itemDate = new Date(item.dt * 1000);
     const itemDateStr = itemDate.toLocaleDateString();
@@ -32,12 +37,12 @@ const MobileHourlyForecast = ({ weather }) => {
 
   return (
     <div className="flex justify-center items-center mx-auto">
-      <div className="w-full max-w-[340px] flex justify-center items-center py-3">
+      <div className="w-full max-w-[330px] flex justify-center items-center py-3">
         <div className="flex w-full overflow-x-auto snap-x snap-mandatory no-scrollbar pb-1">
           {hourlyData.map((item, id) => (
             <div
               key={id}
-              className="flex-none w-1/4 snap-start flex flex-col items-center group"
+              className="flex-none w-[22%] snap-start flex flex-col items-center group"
             >
               <div className="w-12 h-12 rounded-full bg-support2 flex justify-center items-center mb-3">
                 <img

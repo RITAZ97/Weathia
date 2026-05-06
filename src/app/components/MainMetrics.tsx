@@ -1,7 +1,12 @@
 "use client";
 import React from 'react';
+import { WeatherHighlights } from '@/types/weather';
 
-const MainMetrics = ({ highLights }) => {
+interface MainMetricsProps {
+  highLights: WeatherHighlights | null;
+}
+
+const MainMetrics: React.FC<MainMetricsProps> = ({highLights})=> {
 
   return (
     <div className="sm:hidden w-[92%] text-white mx-auto py-[40px]">
