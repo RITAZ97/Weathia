@@ -1,9 +1,21 @@
 "use client";
 import React, { useMemo } from 'react';
+import { WeatherData } from "@/types/weather";
 
-const DynamicBg = ({weather}) => {
+interface WeatherCondition {
+  id: number;
+  main: string;
+  description: string;
+  icon: string;
+}
 
-  const bgClassName = useMemo(() => {
+interface DynamicBgProps {
+  weather: WeatherData | null
+}
+
+const DynamicBg: React.FC<DynamicBgProps> = ({weather}) => {
+
+  const bgClassName = useMemo<string>(() => {
     if (!weather?.current || !weather?.daily?.[0]) {
       return "bg-[url('/images/clear-day.png')]";
     }

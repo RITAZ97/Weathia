@@ -1,7 +1,12 @@
 "use client";
 import React from 'react';
+import { WeatherData } from '@/types/weather';
 
-const MobileHourlyForecast = ({ weather }) => {
+interface MobileHourlyForecastProps {
+  weather: WeatherData | null;
+  weatherData?: any[];
+}
+const MobileHourlyForecast: React.FC<MobileHourlyForecastProps> = ({ weather }) => {
   const hourlyData = weather?.hourly?.slice(0, 24).map((item, index) => {
     const itemDate = new Date(item.dt * 1000);
     const itemDateStr = itemDate.toLocaleDateString();

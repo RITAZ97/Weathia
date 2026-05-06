@@ -1,6 +1,6 @@
 # 🌦️ Weathia
 
-**Weathia** is a premium, high-performance weather forecasting web application built with **Next.js**. It goes beyond basic weather reporting by integrating the **Google Maps API** for precision location searching and the **OpenWeather One Call API** for comprehensive meteorological data, all wrapped in a visually immersive interface.
+**Weathia** is a premium, high-performance weather forecasting website built with **Next.js** and **TypeScript**. It goes beyond basic weather reporting by integrating the **Google Maps API** for precision location searching and the **OpenWeather One Call API** for comprehensive meteorological data, all wrapped in a visually immersive and type-safe interface.
 
 ---
 
@@ -36,19 +36,20 @@ One of Weathia's standout technical features is its **Local Time Correction**. T
 
 ### 4. Immersive Dynamic Visuals 🌄
 * **Adaptive Backgrounds**: The UI background transforms based on weather status (Clear, Clouds, Rain, Snow) and the local **Day/Night cycle** (calculated via Sunrise/Sunset data).
-* **Responsive Design**: Fully optimized for a seamless experience across all devices, from desktops to mobile phones.
+* **Responsive Design**: Fully optimized for a mobile-first, seamless experience across all devices.
 
 ---
 
 ## 🛠️ Skills & Technologies Used
 
 * **Framework**: [Next.js](https://nextjs.org/) (React 18)
-* **Language**: JavaScript (ES6+)
+* **Language**: **TypeScript** (Strongly typed components and API interfaces)
 * **Styling**: Tailwind CSS / CSS3
 * **APIs**: 
     * **OpenWeather API**: Core weather engine.
     * **Google Maps API**: Places & Geocoding services.
 * **State Management**: React Hooks (`useState`, `useEffect`)
+
 ---
 
 ## 🚀 How to Run the Project
@@ -80,9 +81,11 @@ To run this app, you need to obtain your own API keys from the following service
 4.  **Set up environment variables:**
     Create a file named `.env.local` in the root of your project and add your keys as follows:
 
-    ```env
+    
+```env
     NEXT_PUBLIC_WEATHER_API_KEY="YOUR_ACTUAL_OPENWEATHER_KEY"
     NEXT_PUBLIC_GOOGLE_API_KEY="YOUR_ACTUAL_GOOGLE_MAPS_KEY"
+    ```
 
 5.  **Run the app:**
     ```bash

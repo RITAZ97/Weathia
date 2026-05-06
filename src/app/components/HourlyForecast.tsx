@@ -1,7 +1,13 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
+import { WeatherData } from '@/types/weather';
 
-const HourlyForecast = ({ weatherData = [], weather }) => {
+interface HourlyForecastProps {
+  weather: WeatherData | null;
+  weatherData?: any[];
+}
+
+const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) => {
   const [startIndex, setStartIndex] = useState(0);
   const displayCount = 12;
   const hourlyData = weather?.hourly?.slice(0, 24).map((item) => {
@@ -32,9 +38,9 @@ const HourlyForecast = ({ weatherData = [], weather }) => {
   }) || [];
 
   useEffect(() => {
-    if (weatherData.length === 0) return;
+    if (weatherData.length === 0 || !weather) return;
 
-    const targetDate = new Date((Date.now() / 1000 + weather.timezone_offset) * 1000);
+    const targetDate = new Date((Date.now() / 1000 + (weather.timezone_offset ?? 0)) * 1000);
     const currentHour = targetDate.getUTCHours();
 
     const currentIndex = weatherData.findIndex(item => {
