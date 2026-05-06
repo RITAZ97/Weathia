@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ESNext",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": true, // 关键：允许 JS 和 TS 并存
+    "allowJs": true,
     "skipLibCheck": true,
-    "strict": true, // 建议初学者先保持 true，报错太猛再改
+    "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -22,7 +22,7 @@
         "name": "next"
       }
     ],
-    "paths": { // 如果之前有路径别名，确保这里也有
+    "paths": {
       "@/*": [
         "./src/*"
       ]
@@ -30,6 +30,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "additional-modules.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
