@@ -1,43 +1,11 @@
 import React from 'react';
 import HourlyForecast from './HourlyForecast';
+import { WeatherData, WeatherHighlights } from '@/types/weather';
 import { getWeekday } from '@/utils/temp_date';
-
-interface DailyForecast {
-  dt: number;
-  temp: {
-    max: number;
-    min: number;
-  };
-  weather: Array<{
-    main: string;
-    description: string;
-  }>;
-}
-
-interface WeatherData {
-  daily?: DailyForecast[];
-  [key: string]: any; 
-}
-
-interface HighLights {
-  todayMax?: number | string;
-  todayMin?: number | string;
-  tomorrowName?: string;
-  tomorrowMax?: number | string;
-  tomorrowMin?: number | string;
-  currentTime?: string;
-  rainChance?: string | number;
-  wind?: number | string;
-  uv?: number | string;
-  uvText?: string;
-  humidity?: number | string;
-  visibility?: number | string;
-  pressure?: number | string;
-}
 
 interface WeatherDashboardProps {
   weather: WeatherData | null;
-  highLights: HighLights | null;
+  highLights: WeatherHighlights | null;
 }
 
 const WeatherDashboard: React.FC<WeatherDashboardProps> = ({ weather, highLights }) => {
@@ -52,14 +20,14 @@ const WeatherDashboard: React.FC<WeatherDashboardProps> = ({ weather, highLights
             <div className="flex gap-2 xl:gap-4 items-center">
               <h3 className="text-white text-[12px] md:text-[14px] lg:text-[16px]">Today</h3>
               <div className="flex text-white">
-                <p className="text-[12px] md:text-[14px] lg:text-[16px]">{highLights?.todayMax}/</p>
-                <p className="text-[12px] md:text-[14px] lg:text-[16px]"> {highLights?.todayMin}℃</p>
+                <p className="text-[12px] md:text-[14px] lg:text-[16px]">{highLights?.todayMin}/</p>
+                <p className="text-[12px] md:text-[14px] lg:text-[16px]"> {highLights?.todayMax}℃</p>
               </div>
               <div className="w-[1.5px] h-6 bg-white" />
               <h3 className="text-white text-[12px] md:text-[14px] lg:text-[16px]">{highLights?.tomorrowName}</h3>
               <div className="flex text-white">
-                <p className="text-[12px] md:text-[14px] lg:text-[16px]">{highLights?.tomorrowMax}/</p>
-                <p className="text-[12px] md:text-[14px] lg:text-[16px]"> {highLights?.tomorrowMin}℃</p>
+                <p className="text-[12px] md:text-[14px] lg:text-[16px]">{highLights?.tomorrowMin}/</p>
+                <p className="text-[12px] md:text-[14px] lg:text-[16px]"> {highLights?.tomorrowMax}℃</p>
               </div>
             </div>
           </div>

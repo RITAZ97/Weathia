@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from 'react';
 
 interface CityData {
@@ -95,7 +94,7 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
   };
 
   return (
-    <div className="flex items-center gap-2 relative">
+    <div className="flex items-center gap-3 relative">
       <button className="hover:scale-110 transition-transform cursor-pointer" onClick={handleAction}>
         <svg
           className="w-6 h-6 sm:w-[28px] sm:h-[28px] overflow-visible"
