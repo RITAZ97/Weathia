@@ -24,7 +24,7 @@ function AuthForm() {
     }
   }, [searchParams]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
@@ -44,37 +44,45 @@ function AuthForm() {
       }
     } else {
       try {
-  setLoading(true);
-  setError('');
+        setLoading(true);
+        setError('');
 
-  const res = await fetch('/api/register?action=register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  });
+        const res = await fetch('/api/register?action=register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
 
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Registration failed');
-  }
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          throw new Error(errorData.message || 'Registration failed');
+        }
 
-  const data = await res.json();
+        const data = await res.json();
 
-  alert('Registration successful! Please sign in with your password.');
-  setAuthMode('signin');
-  setError('');
+        alert('Registration successful! Please sign in with your password.');
+        setAuthMode('signin');
+        setError('');
 
-} catch (err: any) {
-  console.error("Frontend catch caught error:", err);
-  setError(err.message || 'Something went wrong during registration');
-} finally {
-  setLoading(false);
-}
+      } catch (err: any) {
+        console.error("Frontend catch caught error:", err);
+        setError(err.message || 'Something went wrong during registration');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
-    <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl text-center">
+    <div className="relative w-full max-w-md bg-white p-8 rounded-2xl shadow-xl text-center">
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="absolute top-5 right-5 text-gray-500 hover:text-gray-700 transition cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
       <h1 className="text-2xl font-bold tracking-wider text-black uppercase mb-1">
         {authMode === 'signin' ? 'Welcome Back' : 'Create Your Account'}
       </h1>

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, FC } from 'react';
+import { useSession } from 'next-auth/react'; 
 import { WeatherData } from '@/types/weather';
 
 interface HourlyForecastProps {
@@ -8,8 +9,13 @@ interface HourlyForecastProps {
 }
 
 const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) => {
+  const { data: session } = useSession(); 
+  const isLoggedIn = !!session;
+
   const [startIndex, setStartIndex] = useState(0);
   const displayCount = 12;
+  const maxAllowedHours = isLoggedIn ? 24 : 12;
+
   const hourlyData = weather?.hourly?.slice(0, 24).map((item) => {
     const itemDate = new Date(item.dt * 1000).toLocaleDateString();
     const dayInfo = weather.daily.find(d =>
@@ -51,13 +57,14 @@ const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) 
     });
 
     if (currentIndex !== -1) {
-      const safeIndex = Math.min(currentIndex, Math.max(0, weatherData.length - displayCount));
+      const maxIndex = Math.max(0, Math.min(weatherData.length, maxAllowedHours) - displayCount);
+      const safeIndex = Math.min(currentIndex, maxIndex);
       setStartIndex(safeIndex);
     }
-  }, [weatherData]);
+  }, [weatherData, maxAllowedHours]);
 
   const moveNext = () => {
-    if (startIndex + displayCount < hourlyData.length) {
+    if (startIndex + displayCount < maxAllowedHours && startIndex + displayCount < hourlyData.length) {
       setStartIndex(startIndex + displayCount);
     }
   };
@@ -67,6 +74,8 @@ const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) 
       setStartIndex(startIndex - displayCount);
     }
   };
+
+  const isNextDisabled = startIndex + displayCount >= hourlyData.length || (!isLoggedIn && startIndex + displayCount >= maxAllowedHours);
 
   return (
     <div className="w-full mt-18 px-8 xl:px-15 rounded-2xl text-white">
@@ -79,6 +88,7 @@ const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) 
         >
           <img src="/icons/left.svg" className="w-4 h-auto object-contain" alt="left" />
         </button>
+
         <div className="w-full overflow-hidden">
           <div
             className="flex transition-transform duration-700 cubic-bezier(0.4, 0, 0.2, 1)"
@@ -89,7 +99,7 @@ const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) 
             {hourlyData.map((item, id) => (
               <div
                 key={id}
-                className="flex-none w-[8.333333%] flex flex-col items-center group"
+                className="flex-none w-[8.333333%] flex flex-col items-center group/item"
               >
                 <div className="w-12 h-8 lg:h-12 rounded-full bg-transparent lg:bg-support2 flex justify-center items-center">
                   <img
@@ -107,13 +117,24 @@ const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) 
           </div>
         </div>
 
-        <button
-          onClick={moveNext}
-          disabled={startIndex + displayCount >= 13}
-          className="absolute ml-6 -right-2 z-10 p-2 hover:cursor-pointer disabled:cursor-default transition-all disabled:opacity-40"
-        >
-          <img src="/icons/right.svg" className="w-4 h-auto object-contain" alt="right" />
-        </button>
+        <div className="absolute -right-2 z-10 flex items-center justify-center group">
+          <button
+            onClick={moveNext}
+            disabled={isNextDisabled}
+            className="p-2 transition-all hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <img src="/icons/right.svg" className="w-4 h-auto object-contain" alt="right" />
+          </button>
+          {!isLoggedIn && isNextDisabled && (
+            <div className="absolute bottom-full mb-2 hidden group-hover:flex flex-col items-center pointer-events-none animate-fadeIn">
+              <div className="bg-white text-black text-[12px] font-medium py-1.5 px-3 rounded shadow-lg whitespace-nowrap border border-gray-200">
+                Log in to unlock 24h forecast
+              </div>
+              <div className="w-2 h-2 bg-white rotate-45 -mt-1 border-r border-b border-gray-200"></div>
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   );

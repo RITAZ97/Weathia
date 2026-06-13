@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 interface CityData {
   name: string;
@@ -12,6 +13,7 @@ interface ConfirmModalProps {
   onClose: () => void;
   onConfirm: () => void;
   message: string;
+  showCancel?: boolean;
 }
 
 interface WeatherData {
@@ -30,25 +32,27 @@ interface SavedBoxProps {
   className?: string;
 }
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm, message }) => {
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm, message, showCancel = true }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-[999]">
-      <div className="bg-[#3a3737] text-white px-6 py-8 rounded-lg text-center max-w-[420px] shadow-xl border border-white/10">
-        <p className="mb-6 text-sm md:text-base">{message}</p>
+      <div className="bg-[#3a3737] text-white px-6 py-8 rounded-lg text-center max-w-[420px] shadow-xl border border-white/10 mx-4">
+        <p className="mb-6 text-sm md:text-base leading-relaxed">{message}</p>
         <div className="flex gap-3 justify-center">
           <button
             onClick={onConfirm}
-            className="px-4 py-1.5 bg-[#27ae60] hover:bg-[#219150] text-white rounded transition-colors cursor-pointer text-sm font-medium"
+            className="px-5 py-1.5 bg-[#1cc9a9] hover:bg-[#6ad9c1] text-white rounded transition-colors cursor-pointer text-sm font-medium"
           >
-            Yes
+            {showCancel ? 'Yes' : 'Got it'}
           </button>
-          <button
-            onClick={onClose}
-            className="px-4 py-1.5 bg-[#e74c3c] hover:bg-[#c0392b] text-white rounded transition-colors cursor-pointer text-sm font-medium"
-          >
-            No
-          </button>
+          {showCancel && (
+            <button
+              onClick={onClose}
+              className="px-5 py-1.5 bg-[#e74c3c] hover:bg-[#c0392b] text-white rounded transition-colors cursor-pointer text-sm font-medium"
+            >
+              No
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -56,9 +60,21 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, onConfirm,
 };
 
 const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather }) => {
+  const { data: session, status } = useSession();
+  
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [modalMode, setModalMode] = useState<'toggle' | 'limitExceeded'>('toggle');
   const [isListOpen, setIsListOpen] = useState<boolean>(false);
   const [savedCities, setSavedCities] = useState<CityData[]>([]);
+  const isLoggedIn = status === 'authenticated';
+  const isPremium = (session?.user as any)?.role === 'premium';
+  const getLimit = () => {
+    if (!isLoggedIn) return 5; 
+    if (isPremium) return 50;  
+    return 15;                 
+  };
+
+  const limit = getLimit();
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('weather_cities') || '[]');
@@ -68,10 +84,22 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
   const isFavorited = savedCities.some(city => city.name === currentCity);
 
   const handleAction = () => {
+    if (!isFavorited && savedCities.length >= limit) {
+      setModalMode('limitExceeded');
+      setIsModalOpen(true);
+      return;
+    }
+    
+    setModalMode('toggle');
     setIsModalOpen(true);
   };
 
   const toggleCity = () => {
+    if (modalMode === 'limitExceeded') {
+      setIsModalOpen(false);
+      return;
+    }
+
     if (!isFavorited) {
       const mainCondition = weather?.weather?.[0]?.main || weather?.current?.weather?.[0]?.main;
       const rawTemp = weather?.main?.temp ?? weather?.current?.temp;
@@ -91,6 +119,56 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
       localStorage.setItem('weather_cities', JSON.stringify(updated));
     }
     setIsModalOpen(false);
+  };
+
+  const renderFooterSlogan = () => {
+    if (status === 'loading') {
+      return (
+        <div className="px-4 py-2.5 bg-white/5 border-t border-white/10 text-center">
+          <p className="text-[11px] text-white/30 animate-pulse">Checking status...</p>
+        </div>
+      );
+    }
+
+    if (isLoggedIn && isPremium) {
+      return (
+        <div className="px-4 py-2.5 bg-white/5 border-t border-white/10 text-center flex items-center justify-center gap-2">
+          {session?.user?.image && (
+            <img src={session.user.image} alt="avatar" className="w-4 h-4 rounded-full" />
+          )}
+          <p className="text-[12px] text-[#f1c40f] tracking-wide font-medium">
+            Premium Elite: Enjoy up to 50 saved cities.
+          </p>
+        </div>
+      );
+    }
+
+    if (isLoggedIn) {
+      return (
+        <div className="px-4 py-2.5 bg-white/5 border-t border-white/10 text-center flex flex-col items-center gap-1">
+          <div className="flex items-center gap-1.5">
+            {session?.user?.image && (
+              <img src={session.user.image} alt="avatar" className="w-3.5 h-3.5 rounded-full" />
+            )}
+          </div>
+          <p className="text-[12px] text-white/80 tracking-wide">
+            Limit: 15 cities. <span className="text-[#2DEBC9] font-medium cursor-pointer hover:underline">Go Premium</span> for more tracking options!
+          </p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="px-4 py-2.5 bg-white/5 border-t border-white/10 text-center">
+        <p className="text-[12px] text-white/80 tracking-wide">
+          Limit: 5 cities.{' '}
+          <span onClick={() => signIn()} className="text-[#2DEBC9] hover:underline font-medium cursor-pointer">
+            Log in
+          </span>{' '}
+          to unlock more!
+        </p>
+      </div>
+    );
   };
 
   return (
@@ -123,16 +201,19 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={toggleCity}
+        showCancel={modalMode === 'toggle'}
         message={
-          isFavorited
+          modalMode === 'limitExceeded'
+            ? `You've reached the limit of ${limit} saved cities. Please ${isLoggedIn ? 'upgrade to Premium' : 'log in'} to save more locations!`
+            : isFavorited
             ? `Do you want to remove ${currentCity} from your list?`
             : `Do you want to save ${currentCity} to your list?`
         }
       />
 
       {isListOpen && (
-        <div className="absolute top-12 right-0 bg-[#222]/55 backdrop-blur-sm min-w-[280px] rounded-lg border border-white/10 shadow-2xl z-[100] overflow-hidden">
-          <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20">
+        <div className="absolute top-12 right-0 bg-[#222]/55 backdrop-blur-sm min-w-[280px] rounded-lg border border-white/10 shadow-2xl z-[100] overflow-hidden flex flex-col">
+          <div className="max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 flex-1">
             {savedCities.length > 0 ? (
               savedCities.map((cityObj, index) => (
                 <div
@@ -164,7 +245,7 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
                       setSavedCities(updated);
                       localStorage.setItem('weather_cities', JSON.stringify(updated));
                     }}
-                    className="text-white/60 hover:text-[#ff4d4d] transition-colors text-xl leading-none ml-2 px-1"
+                    className="text-white/80 hover:text-[#ff4d4d] transition-colors text-xl leading-none ml-2 px-1"
                   >
                     <svg
                       className="w-5 h-5"
@@ -179,11 +260,12 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
                 </div>
               ))
             ) : (
-              <div className="p-4 text-[12px] sm:text-[14px] text-white/40 text-center italic">
+              <div className="p-4 text-[12px] sm:text-[14px] text-white/80 text-center italic">
                 No saved cities
               </div>
             )}
           </div>
+          {renderFooterSlogan()}
         </div>
       )}
     </div>
