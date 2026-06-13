@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import { formatTemperature, formatDate } from '@/utils/temp_date';
 import SavedBox from './SavedBox';
 import { WeatherData, WeatherHighlights } from '@/types/weather';
+import UserMenu from './UserMenu';
 
 interface HeaderProps {
   setLocation: (location: string) => void;
@@ -51,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({
               onSelect={(city) => console.log(city)} 
             />
 
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-4">
               <div className="sm:hidden flex gap-3 items-center">
                 <button onClick={() => setIsSearchOpen(true)}>
                   <img src="/icons/search_icon.svg" className="w-4.5 h-auto object-contain" alt="search" />
@@ -87,6 +88,8 @@ const Header: React.FC<HeaderProps> = ({
                 onSelectCity={setLocation}
                 weather={weather} 
               />
+
+              <UserMenu/>
             </div>
           </div>
 

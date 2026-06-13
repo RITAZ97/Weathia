@@ -34,7 +34,7 @@ const weatherApi = {
       if (!geoRes.data || geoRes.data.length === 0) {
         throw new Error("Can't find this city");
       }
-      
+
       const { lat, lon, name, country } = geoRes.data[0];
 
       const response = await axios.get<WeatherData>(ONE_CALL_URL, {
