@@ -5,6 +5,12 @@
   --foreground: #FFFFFF;
 }
 
+@keyframes drawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 @theme {
   --color-primary: rgb(255 255 255);
   --color-secondary: rgb(57, 64, 73);

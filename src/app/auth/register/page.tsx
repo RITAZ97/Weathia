@@ -7,11 +7,9 @@ import { signIn } from 'next-auth/react';
 function AuthForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
-
   const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -97,9 +95,9 @@ function AuthForm() {
             <button
               type="button"
               onClick={() => router.push('/auth/register?mode=register')}
-              className="font-semibold underline text-black hover:text-gray-600 transition"
+              className="font-semibold underline text-black hover:text-gray-600 transition cursor-pointer"
             >
-              Register
+              Sign Up
             </button>
           </>
         ) : (
@@ -108,7 +106,7 @@ function AuthForm() {
             <button
               type="button"
               onClick={() => router.push('/auth/register?mode=login')}
-              className="font-semibold underline text-black hover:text-gray-600 transition"
+              className="font-semibold underline text-black hover:text-gray-600 transition cursor-pointer"
             >
               Sign In
             </button>

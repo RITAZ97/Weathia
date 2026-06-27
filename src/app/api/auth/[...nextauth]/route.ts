@@ -31,8 +31,11 @@ const handler = NextAuth({
           if (!isValid) {
             return null;
           }
-          
-          return { id: user.id, email: user.email };
+          return { 
+            id: user.id, 
+            email: user.email,
+            isPremium: (user as any).isPremium || false 
+          };
         } catch (dbError: any) {
           console.error("Database connection collapsed:", dbError.message || dbError);
           return null;
@@ -40,6 +43,34 @@ const handler = NextAuth({
       }
     })
   ],
+
+  callbacks: {
+    async jwt({ token, user, trigger, session }: any) {
+      if (user) {
+        token.isPremium = (user as any).isPremium || false;
+      } 
+      else if (token.email) {
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: token.email },
+            select: { isPremium: true } 
+          });
+          token.isPremium = dbUser?.isPremium || false;
+        } catch (error) {
+          console.error("Failed to refresh user premium status in JWT:", error);
+        }
+      }
+      return token;
+    },
+
+    async session({ session, token }: any) {
+      if (session.user) {
+        (session.user as any).isPremium = token.isPremium;
+      }
+      return session;
+    }
+  },
+  // =========================================================================
   secret: process.env.NEXTAUTH_SECRET,
   session: { strategy: "jwt" },
   pages: {

@@ -6,7 +6,7 @@ interface MainMetricsProps {
   highLights: WeatherHighlights | null;
 }
 
-const MainMetrics: React.FC<MainMetricsProps> = ({highLights})=> {
+const MainMetrics: React.FC<MainMetricsProps> = ({ highLights }) => {
 
   return (
     <div className="sm:hidden w-[92%] text-white mx-auto py-[40px]">
@@ -65,8 +65,8 @@ const MainMetrics: React.FC<MainMetricsProps> = ({highLights})=> {
             <h3 className="text-[15px]">UV</h3>
           </div>
           <div className="text-center">
-            <p className="text-[14px] font-medium">{highLights?.uv}</p>
             <p className="text-[13px] opacity-80">{highLights?.uvText}</p>
+            <p className="text-[14px] font-medium">{highLights?.uv}</p>
           </div>
         </div>
       </div>

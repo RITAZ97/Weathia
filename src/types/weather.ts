@@ -63,3 +63,13 @@ export interface WeatherHighlights {
   currentTime: string;
   rainChance: string;
 }
+
+export interface User {
+  id: string;
+  isPremium: boolean;
+}
+
+export interface CheckoutSessionResponse {
+  url?: string;
+  error: string;
+}

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface CityData {
   name: string;
@@ -67,10 +68,10 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
   const [isListOpen, setIsListOpen] = useState<boolean>(false);
   const [savedCities, setSavedCities] = useState<CityData[]>([]);
   const isLoggedIn = status === 'authenticated';
-  const isPremium = (session?.user as any)?.role === 'premium';
+  const isPremium = (session?.user as any)?.isPremium === true;
   const getLimit = () => {
     if (!isLoggedIn) return 5; 
-    if (isPremium) return 50;  
+    if (isPremium) return 99;  
     return 15;                 
   };
 
@@ -136,8 +137,8 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
           {session?.user?.image && (
             <img src={session.user.image} alt="avatar" className="w-4 h-4 rounded-full" />
           )}
-          <p className="text-[12px] text-[#f1c40f] tracking-wide font-medium">
-            Premium Elite: Enjoy up to 50 saved cities.
+          <p className="text-[12px] text-[#2DEBC9] tracking-wide font-medium">
+            Premium Elite: Enjoy up to 99 saved cities.
           </p>
         </div>
       );

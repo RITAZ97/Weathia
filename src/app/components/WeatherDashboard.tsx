@@ -12,10 +12,10 @@ const WeatherDashboard: React.FC<WeatherDashboardProps> = ({ weather, highLights
   return (
     <div className="hidden mx-auto sm:block w-[92%] lg:w-[85%] max-w-[1320px] h-[668px] bg-[#6C6F75]/45 backdrop-blur-[8px] rounded-[25px]">
       <div className="w-full h-100 flex justify-between items-start px-8 xl:px-15 py-8">
-      
+
         <div className="w-[45%] xl:w-[40%] h-full">
           <p className="text-[20px] text-center font-semibold text-white">Today's Highlight</p>
-          
+
           <div className="w-full h-[50px] flex justify-center items-center bg-[#BCC0C7]/50 backdrop-blur-[8px] rounded-full mt-7 mb-[55px]">
             <div className="flex gap-2 xl:gap-4 items-center">
               <h3 className="text-white text-[12px] md:text-[14px] lg:text-[16px]">Today</h3>
@@ -66,8 +66,8 @@ const WeatherDashboard: React.FC<WeatherDashboardProps> = ({ weather, highLights
                   <h3 className="font-semibold">UV</h3>
                 </div>
                 <div className="text-center">
-                  <h3 className="text-[18px]">{highLights?.uv}</h3>
                   <p className="text-[14px]">{highLights?.uvText}</p>
+                  <h3 className="text-[14px] lg:text-[16px]">{highLights?.uv}</h3>
                 </div>
               </div>
             </div>
@@ -140,7 +140,7 @@ const WeatherDashboard: React.FC<WeatherDashboardProps> = ({ weather, highLights
           ))}
         </div>
       </div>
-      
+
       <HourlyForecast weather={weather as any} />
     </div>
   );
