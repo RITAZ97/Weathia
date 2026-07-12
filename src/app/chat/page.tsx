@@ -87,21 +87,21 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="relative w-full mt-16 pt-20 bg-[#161616] border border-white/5 rounded-3xl sm:p-2 md:p-22 shadow-2xl backdrop-blur-md flex flex-col min-h-screen">
+    <div className="relative w-full bg-[#161616] border border-white/5 sm:p-2 md:p-10 backdrop-blur-md flex flex-col min-h-screen">
 
       <button
         onClick={handleCloseChat} 
-        className="absolute top-6 mt-4 ml-2 p-2 rounded-xl bg-white/5 text-white/40 border border-white/5 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-95 cursor-pointer z-50 flex items-center justify-center"
+        className="absolute mt-4 ml-2 p-2 rounded-xl bg-white/5 text-white/40 border border-white/5 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-95 cursor-pointer z-50 flex items-center justify-center"
         title="exit the chat"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
-      <div className="w-full bg-[#161616] border border-white/5 rounded-3xl p-6 sm:p-20 shadow-2xl backdrop-blur-md flex flex-col min-h-screen justify-around">
+      <div className="w-full bg-[#161616] border border-white/5 p-6 sm:p-10 shadow-2xl backdrop-blur-md flex flex-col min-h-screen justify-around">
 
         <div className="overflow-y-auto pr-1 mt-20 pt-20 scrollbar-thin scrollbar-thumb-white/15 scrollbar-track-transparent">
-          <div className="w-10 h-10 flex items-center justify-center gap-3 mb-4 bg-[#2DEBC9]/10">
+          <div className="flex items-center justify-center gap-3 mb-4">
             <img
               src="/icons/weathia_logo.svg"
               alt="logo"
@@ -109,11 +109,11 @@ export default function ChatPage() {
             />
             <span className="text-xl font-medium">Weathia AI Assistant</span>
           </div>
-          <div className="flex flex-col p-10 justify-bwtween items-center mt-20">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white mb-2">
+          <div className="flex flex-col gap-4 p-5 justify-bwtween items-center mt-20">
+            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white mb-2">
               How can I help you today?
             </h2>
-            <p className="text-xs text-center sm:text-sm text-white/50 max-w-md mb-20 leading-relaxed">
+            <p className="text-xs text-center sm:text-sm text-white/50 max-w-md mb-10 leading-relaxed">
               I am your Weathia AI Assistant. Ask me about real-time weather forecasts, global climate trends, or tailored travel recommendations.
             </p>
           </div>
@@ -147,7 +147,7 @@ export default function ChatPage() {
                   className={`flex  ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-150`}
                 >
                   <div
-                    className={`max-w-[500px] h-auto justify-center items-center rounded-2xl px-3 py-6 text-sm leading-relaxed break-words ${msg.role === 'user'
+                    className={`max-w-[500px] h-auto justify-center items-center px-3 text-[12px] leading-relaxed break-words ${msg.role === 'user'
                       ? 'text-[#2DEBC9] font-medium rounded-tr-none' 
                       : 'bg-white/5 border border-white/10 text-white rounded-tl-none'
                       }`}
@@ -193,7 +193,7 @@ export default function ChatPage() {
             <button
               onClick={() => handleSend(input)}
               disabled={!input.trim() || isLoading}
-              className="absolute right-2 top-1/2 -translate-y-1/2 p-2.5 rounded-xl bg-[#2DEBC9] text-white hover:brightness-110 active:scale-95 transition-all cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+              className="absolute right-3 top-1/2 cursor-pointer disabled:cursor-not-allowed"
             >
               <img src="/icons/submit.svg" alt="submit" className="" />
             </button>
