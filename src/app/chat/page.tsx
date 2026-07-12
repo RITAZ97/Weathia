@@ -98,7 +98,7 @@ export default function ChatPage() {
           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
-      <div className="w-full bg-[#161616] border border-white/5 p-6 sm:p-10 shadow-2xl backdrop-blur-md flex flex-col min-h-screen justify-around">
+      <div className="w-full bg-[#161616] border border-white/5 shadow-2xl backdrop-blur-md flex flex-col min-h-screen justify-around">
 
         <div className="overflow-y-auto pt-15 scrollbar-thin scrollbar-thumb-white/15 scrollbar-track-transparent">
           <div className="flex items-center justify-center gap-3 mb-4">
@@ -118,7 +118,7 @@ export default function ChatPage() {
             </p>
           </div>
           {messages.length === 0 ? (
-            <div className="w-full h-full flex flex-col items-center text-center justify-center my-auto py-10 animate-in fade-in duration-300">
+            <div className="w-full h-full flex flex-col items-center text-center justify-center my-auto animate-in fade-in duration-300">
               <div className="flex flex-col gap-6 justify-center items-stretch w-[1/2] max-w-2xl mx-auto">
                 {samplePrompts.map((prompt, index) => (
                   <button
@@ -171,7 +171,7 @@ export default function ChatPage() {
           )}
         </div>
 
-        <div className="w-full pb-12 flex justify-center sticky bottom-0 bg-[#161616]">
+        <div className="w-full pb-6 flex justify-center sticky bottom-0 bg-[#161616]">
           <div
             style={{ width: '100%', maxWidth: '600px', height: '60px' }}
             className="relative flex justify-end items-center border border-[#2DEBC9] rounded-xl p-2 mx-auto
@@ -193,7 +193,7 @@ export default function ChatPage() {
             <button
               onClick={() => handleSend(input)}
               disabled={!input.trim() || isLoading}
-              className="absolute right-3 top-1/2 justify-center cursor-pointer disabled:cursor-not-allowed"
+              className="absolute right-3 justify-center items-center cursor-pointer disabled:cursor-not-allowed"
             >
               <img src="/icons/submit.svg" alt="submit" className="" />
             </button>
