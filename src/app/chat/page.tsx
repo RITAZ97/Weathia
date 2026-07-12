@@ -87,7 +87,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="relative w-full bg-[#161616] border border-white/5 sm:p-2 md:p-10 backdrop-blur-md flex flex-col min-h-screen">
+    <div className="relative w-full bg-[#161616] border border-white/5 backdrop-blur-md flex flex-col min-h-screen">
 
       <button
         onClick={handleCloseChat} 
@@ -100,7 +100,7 @@ export default function ChatPage() {
       </button>
       <div className="w-full bg-[#161616] border border-white/5 p-6 sm:p-10 shadow-2xl backdrop-blur-md flex flex-col min-h-screen justify-around">
 
-        <div className="overflow-y-auto pr-1 mt-20 pt-20 scrollbar-thin scrollbar-thumb-white/15 scrollbar-track-transparent">
+        <div className="overflow-y-auto pt-15 scrollbar-thin scrollbar-thumb-white/15 scrollbar-track-transparent">
           <div className="flex items-center justify-center gap-3 mb-4">
             <img
               src="/icons/weathia_logo.svg"
@@ -109,11 +109,11 @@ export default function ChatPage() {
             />
             <span className="text-xl font-medium">Weathia AI Assistant</span>
           </div>
-          <div className="flex flex-col gap-4 p-5 justify-bwtween items-center mt-20">
+          <div className="flex flex-col gap-4 p-5 justify-bwtween items-center">
             <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white mb-2">
               How can I help you today?
             </h2>
-            <p className="text-xs text-center sm:text-sm text-white/50 max-w-md mb-10 leading-relaxed">
+            <p className="text-xs text-center sm:text-sm text-white/50 max-w-md leading-relaxed">
               I am your Weathia AI Assistant. Ask me about real-time weather forecasts, global climate trends, or tailored travel recommendations.
             </p>
           </div>
@@ -174,7 +174,7 @@ export default function ChatPage() {
         <div className="w-full pb-12 flex justify-center sticky bottom-0 bg-[#161616]">
           <div
             style={{ width: '100%', maxWidth: '600px', height: '60px' }}
-            className="relative flex justify-end items-center bg-[#b1aaaa] border border-[#2DEBC9] rounded-xl p-2 mx-auto
+            className="relative flex justify-end items-center border border-[#2DEBC9] rounded-xl p-2 mx-auto
             ">
             <input
               type="text"
@@ -193,7 +193,7 @@ export default function ChatPage() {
             <button
               onClick={() => handleSend(input)}
               disabled={!input.trim() || isLoading}
-              className="absolute right-3 top-1/2 cursor-pointer disabled:cursor-not-allowed"
+              className="absolute right-3 top-1/2 justify-center cursor-pointer disabled:cursor-not-allowed"
             >
               <img src="/icons/submit.svg" alt="submit" className="" />
             </button>
