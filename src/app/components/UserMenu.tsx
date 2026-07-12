@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { User, CheckoutSessionResponse } from '@/types/weather';;
+import { User, CheckoutSessionResponse } from '@/types/weather';
 
 
 export default function UserMenu() {
@@ -39,7 +39,7 @@ export default function UserMenu() {
 
     setIsPaymentLoading(true);
     try {
-      const priceId = 'price_1TkMKsDrnf9PBdtp4VX9Q6A7'; 
+      const priceId = 'price_1TkMKsDrnf9PBdtp4VX9Q6A7';
       console.log('--- Preparing data for backend ---');
       console.log('Current user session:', session);
       console.log('Retrieved userId:', (session?.user as any)?.id);
@@ -56,7 +56,7 @@ export default function UserMenu() {
       const data: CheckoutSessionResponse = await response.json();
 
       if (data.url) {
-        window.location.href = data.url; 
+        window.location.href = data.url;
       } else {
         alert(data.error || 'Failed to create checkout session');
       }
@@ -125,7 +125,7 @@ export default function UserMenu() {
                     <span className="text-[#2DEBC9]">✓</span>
                     <button
                       onClick={() => {
-                        setIsDropdownOpen(false); 
+                        setIsDropdownOpen(false);
                         if (session?.user) {
                           router.push('/premium/activate-trial');
                         } else {
@@ -138,6 +138,23 @@ export default function UserMenu() {
                     </button>
                   </li>
                 </ul>
+              )}
+
+              {session?.user && (session.user as any).isPremium && (
+                <button
+                  onClick={() => {
+                    setIsDropdownOpen(false);
+                    router.push('/chat'); 
+                  }}
+                  className="w-full mb-3 justify-center items-center py-2.5 px-4 border border-[#2DEBC9] rounded-full flex transition-all transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer group bg-transparent"
+                >
+                  <div className="flex items-center gap-2 justify-center">
+                    <div className="w-1.5 h-1.5 rounded-full animate-pulse bg-[#2DEBC9] shadow-md shadow-[#2DEBC9]/50" />
+                    <span className="text-xs font-medium text-white tracking-wider uppercase group-hover:text-[#2DEBC9] transition-colors">
+                      Weathia Assistant
+                    </span>
+                  </div>
+                </button>
               )}
 
               {!(session.user as any).isPremium && (
@@ -153,7 +170,7 @@ export default function UserMenu() {
 
               <button
                 onClick={() => { setIsDropdownOpen(false); signOut(); }}
-                className="w-full bg-white text-black py-2.5 rounded-full font-bold text-xs uppercase tracking-wider
+                className="w-full text-xs uppercase font-bold bg-white text-black py-2.5 rounded-full tracking-wider
                 cursor-pointer hover:bg-gray-100 transition mb-2.5"
               >
                 Sign Out
@@ -161,7 +178,7 @@ export default function UserMenu() {
 
               <button
                 onClick={() => { setIsDropdownOpen(false); router.push('/auth/register?mode=register'); }}
-                className="w-full bg-transparent text-white py-2.5 rounded-full font-bold text-xs uppercase tracking-wider border border-white/20 
+                className="w-full bg-transparent text-white py-2.5 rounded-full text-xs uppercase font-bold tracking-wider border border-white/20 
                 cursor-pointer hover:bg-white/5 transition"
               >
                 Add Another Account

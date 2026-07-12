@@ -9,17 +9,24 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.6",
+    "@ai-sdk/react": "^4.0.16",
+    "@google/genai": "^2.10.0",
     "@prisma/client": "^5.22.0",
     "@react-google-maps/api": "^2.20.8",
+    "ai": "^7.0.11",
     "axios": "^1.13.3",
     "bcryptjs": "^3.0.3",
+    "https-proxy-agent": "^9.1.0",
     "lucide-react": "^0.562.0",
     "next": "16.1.0",
     "next-auth": "^4.24.14",
+    "openai": "^6.45.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-select": "^5.10.2",
-    "stripe": "^22.2.2"
+    "stripe": "^22.2.2",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

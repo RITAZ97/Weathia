@@ -14,35 +14,37 @@ export default function Home() {
   return (
     <main className="relative w-full min-h-screen overflow-x-hidden">
       <DynamicBg weather={weather} />
-      
+
+
       <div className="absolute w-full h-full pointer-events-none">
         <div className="absolute bottom-0 w-full bg-gradient-to-t from-[#313D49] via-[#313D49]/80 to-transparent h-[60%]" />
       </div>
 
-      <div className="relative z-10 w-full">
+      <div className="w-full">
         <Header
           weather={weather}
           loading={loading}
           error={error}
           setLocation={setLocation}
-          highLights={highLights} 
+          highLights={highLights}
         />
-        
+
         <WeatherDashboard
           weather={weather}
           highLights={highLights}
         />
-        
+
         <MainMetrics
           highLights={highLights}
         />
-        
+
         <ForecastCard
           weather={weather}
           highLights={highLights}
           setLocation={setLocation}
         />
-        
+
+
         <div className="mt-auto">
           <Footer />
         </div>

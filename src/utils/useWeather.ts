@@ -15,7 +15,7 @@ const useWeather = (initialLocation: string = "Melbourne,AU") => {
   const [cities, setCities] = useState<string[]>([]);
   const [citiesWeather, setCitiesWeather] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null)
 
   const fetchMainWeatherData = async () => {
     if (!location) return;

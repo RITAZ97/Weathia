@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, FC } from 'react';
-import { useSession } from 'next-auth/react'; 
+import { useSession } from 'next-auth/react';
 import { WeatherData } from '@/types/weather';
 
 interface HourlyForecastProps {
@@ -9,14 +9,15 @@ interface HourlyForecastProps {
 }
 
 const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) => {
-  const { data: session } = useSession(); 
+  const { data: session } = useSession();
   const isLoggedIn = !!session;
+  const isPremium = !!(session as any)?.user?.isPremium;
 
   const [startIndex, setStartIndex] = useState(0);
   const displayCount = 12;
-  const maxAllowedHours = isLoggedIn ? 24 : 12;
+  const maxAllowedHours = isPremium ? 48 : (isLoggedIn ? 24 : 12);
 
-  const hourlyData = weather?.hourly?.slice(0, 24).map((item) => {
+  const hourlyData = weather?.hourly?.slice(0, maxAllowedHours).map((item) => {
     const itemDate = new Date(item.dt * 1000).toLocaleDateString();
     const dayInfo = weather.daily.find(d =>
       new Date(d.dt * 1000).toLocaleDateString() === itemDate
@@ -37,7 +38,7 @@ const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) 
       displayTime: new Date((item.dt + timezoneOffset) * 1000).toLocaleTimeString('en-GB', {
         hour: '2-digit',
         minute: '2-digit',
-        timeZone: 'UTC' 
+        timeZone: 'UTC'
       }),
       temp: Math.round(item.temp)
     };
@@ -75,7 +76,13 @@ const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) 
     }
   };
 
-  const isNextDisabled = startIndex + displayCount >= hourlyData.length || (!isLoggedIn && startIndex + displayCount >= maxAllowedHours);
+  const isNextDisabled = startIndex + displayCount >= hourlyData.length || startIndex + displayCount >= maxAllowedHours;
+
+  const getTooltipText = () => {
+    if (!isLoggedIn) return "Log in to unlock 24h forecast";
+    if (isLoggedIn && !isPremium) return "Upgrade to Premium to unlock 48h forecast";
+    return "";
+  };
 
   return (
     <div className="w-full mt-18 px-8 xl:px-15 rounded-2xl text-white">
@@ -99,17 +106,25 @@ const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) 
             {hourlyData.map((item, id) => (
               <div
                 key={id}
-                className="flex-none w-[8.333333%] flex flex-col items-center group/item"
-              >
-                <div className="w-12 h-8 lg:h-12 rounded-full bg-transparent lg:bg-support2 flex justify-center items-center">
+                className="flex-none w-[8.333333%] flex flex-col items-center group/item relative"
+              >             
+                <div
+                  className="w-12 h-12 lg:h-12 rounded-full flex justify-center items-center bg-transparent lg:bg-support2 transition-all duration-300"
+                  style={{
+                    border: (id === 0 || id === 24) ? '3px solid #04DBAC' : 'none',
+                  }}
+                >
                   <img
                     src={`/icons/${item.iconName}.svg`}
                     className="w-5 h-auto object-contain"
                     alt={item.weather[0].description}
                   />
                 </div>
+
                 <div className="flex flex-col justify-center items-center lg:pt-2">
-                  <p className="text-primary font-normal text-[12px] lg:text-[14px]">{id === 0 ? "Now" : item.displayTime}</p>
+                  <p className="text-primary font-normal text-[12px] lg:text-[14px]">
+                    {id === 0 ? "Now" : item.displayTime}
+                  </p>
                   <h2 className="text-primary font-semibold">{item.temp}°</h2>
                 </div>
               </div>
@@ -125,10 +140,10 @@ const HourlyForecast: FC<HourlyForecastProps> = ({ weather, weatherData = [] }) 
           >
             <img src="/icons/right.svg" className="w-4 h-auto object-contain" alt="right" />
           </button>
-          {!isLoggedIn && isNextDisabled && (
+          {isNextDisabled && getTooltipText() && (
             <div className="absolute bottom-full mb-2 hidden group-hover:flex flex-col items-center pointer-events-none animate-fadeIn">
               <div className="bg-white text-black text-[12px] font-medium py-1.5 px-3 rounded shadow-lg whitespace-nowrap border border-gray-200">
-                Log in to unlock 24h forecast
+                {getTooltipText()}
               </div>
               <div className="w-2 h-2 bg-white rotate-45 -mt-1 border-r border-b border-gray-200"></div>
             </div>
