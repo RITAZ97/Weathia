@@ -139,7 +139,7 @@ export default function ChatPage() {
           ) : (
             <div
               style={{ width: '100%', maxWidth: '500px', maxHeight: '500px' }}
-              className="space-y-12 mx-auto justify-between items-start py-2 p-4 animate-in fade-in duration-200 overflow-y-auto
+              className="flex flex-col gap-6 mx-auto justify-between items-start py-2 p-4 animate-in fade-in duration-200 overflow-y-auto
              scrollbar-thin scrollbar-thumb-white/30 scrollbar-track-white/5">
               {messages.map((msg, i) => (
                 <div
@@ -147,7 +147,7 @@ export default function ChatPage() {
                   className={`flex  ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-150`}
                 >
                   <div
-                    className={`max-w-[500px] h-auto justify-center items-center p-3 text-[12px] rounded-xl leading-relaxed break-words ${msg.role === 'user'
+                    className={`max-w-[500px] h-auto justify-center items-center p-3 text-sm rounded-xl leading-relaxed break-words ${msg.role === 'user'
                       ? 'text-[#2DEBC9] font-medium rounded-tr-none' 
                       : 'bg-white/5 border border-white/10 text-white rounded-tl-none'
                       }`}
