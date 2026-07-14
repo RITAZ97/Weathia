@@ -119,7 +119,7 @@ export default function ChatPage() {
           </div>
           {messages.length === 0 ? (
             <div className="w-full h-full flex flex-col items-center text-center justify-center my-auto animate-in fade-in duration-300">
-              <div className="flex flex-col gap-6 justify-center items-stretch w-[1/2] max-w-2xl mx-auto">
+              <div className="flex flex-col gap-6 p-3 justify-center items-stretch w-[1/2] max-w-2xl mx-auto">
                 {samplePrompts.map((prompt, index) => (
                   <button
                     key={index}
@@ -138,16 +138,16 @@ export default function ChatPage() {
             </div>
           ) : (
             <div
-              style={{ width: '100%', maxWidth: '600px', maxHeight: '600px' }}
-              className="space-y-12 mx-auto justify-between items-start py-2 pr-4 animate-in fade-in duration-200 overflow-y-auto
-              max-h-[500px] scrollbar-thin scrollbar-thumb-white/30 scrollbar-track-white/5">
+              style={{ width: '100%', maxWidth: '500px', maxHeight: '500px' }}
+              className="space-y-12 mx-auto justify-between items-start py-2 p-4 animate-in fade-in duration-200 overflow-y-auto
+             scrollbar-thin scrollbar-thumb-white/30 scrollbar-track-white/5">
               {messages.map((msg, i) => (
                 <div
                   key={i}
                   className={`flex  ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-150`}
                 >
                   <div
-                    className={`max-w-[500px] h-auto justify-center items-center px-3 text-[12px] leading-relaxed break-words ${msg.role === 'user'
+                    className={`max-w-[500px] h-auto justify-center items-center p-3 text-[12px] rounded-xl leading-relaxed break-words ${msg.role === 'user'
                       ? 'text-[#2DEBC9] font-medium rounded-tr-none' 
                       : 'bg-white/5 border border-white/10 text-white rounded-tl-none'
                       }`}
@@ -171,7 +171,7 @@ export default function ChatPage() {
           )}
         </div>
 
-        <div className="w-full pb-6 flex justify-center sticky bottom-0 bg-[#161616]">
+        <div className="w-full pb-6 px-3 flex justify-center sticky bottom-0 bg-[#161616]">
           <div
             style={{ width: '100%', maxWidth: '600px', height: '60px' }}
             className="relative flex justify-end items-center border border-[#2DEBC9] rounded-xl p-2 mx-auto
