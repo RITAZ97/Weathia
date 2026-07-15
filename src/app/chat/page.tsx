@@ -13,22 +13,22 @@ export default function ChatPage() {
   const router = useRouter();
 
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([]); 
-  const [isLoading, setIsLoading] = useState(false);      
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/register?mode=signin');
     } else if (status === 'authenticated' && !(session?.user as any)?.isPremium) {
-      router.push('/'); 
+      router.push('/');
     }
   }, [status, session, router]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
-  
+
   const samplePrompts = [
     {
       title: "Tomorrow's Peak",
@@ -41,9 +41,9 @@ export default function ChatPage() {
       text: "Based on the current weather condition, what would be the ideal outfit recommendation for going out today in Melbourne?"
     },
     {
-      title: "Wellness & Comfort",
-      desc: "Evaluate the current physical comfort level and environmental conditions.",
-      text: "Check the current comfort level in Melbourne and give any outdoor or indoor wellness advice?"
+      title: "Layering & Gear Guide",
+      desc: "Get clothing and gear advice based on wind chill and feels-like temp.",
+      text: "Considering the current feels-like temperature, wind speed, and humidity in Melbourne today, what is the best layered outfit and gear recommendation for going out?"
     }
   ];
 
@@ -53,7 +53,7 @@ export default function ChatPage() {
     if (!trimmedText || isLoading) return;
     const userMessage: Message = { role: 'user', content: trimmedText };
     setMessages(prev => [...prev, userMessage]);
-    setInput('');  
+    setInput('');
     setIsLoading(true);
 
     try {
@@ -72,14 +72,14 @@ export default function ChatPage() {
     } catch (error) {
       console.error("error:", error);
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
   const handleCloseChat = () => {
-    setMessages([]);   
-    setInput('');     
-    router.back();;   
+    setMessages([]);
+    setInput('');
+    router.back();;
   };
 
   if (status === 'loading') {
@@ -90,7 +90,7 @@ export default function ChatPage() {
     <div className="relative w-full bg-[#161616] border border-white/5 backdrop-blur-md flex flex-col min-h-screen">
 
       <button
-        onClick={handleCloseChat} 
+        onClick={handleCloseChat}
         className="absolute mt-4 ml-2 p-2 rounded-xl bg-white/5 text-white/40 border border-white/5 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-95 cursor-pointer z-50 flex items-center justify-center"
         title="exit the chat"
       >
@@ -148,7 +148,7 @@ export default function ChatPage() {
                 >
                   <div
                     className={`max-w-[500px] h-auto justify-center items-center p-3 text-sm rounded-xl leading-relaxed break-words ${msg.role === 'user'
-                      ? 'text-[#2DEBC9] font-medium rounded-tr-none' 
+                      ? 'text-[#2DEBC9] font-medium rounded-tr-none'
                       : 'bg-white/5 border border-white/10 text-white rounded-tl-none'
                       }`}
                   >
@@ -185,7 +185,7 @@ export default function ChatPage() {
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
-                  handleSend(input); 
+                  handleSend(input);
                 }
               }}
               className="w-full bg-transparent text-[14px] text-white placeholder-white/30 outline-none focus:outline-none focus:ring-0 focus:border-transparent pr-12 disabled:opacity-50"

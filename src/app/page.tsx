@@ -15,9 +15,7 @@ export default function Home() {
     <main className="relative w-full min-h-screen overflow-x-hidden">
       <DynamicBg weather={weather} />
 
-
-      <div className="absolute w-full h-full pointer-events-none">
-        <div className="absolute bottom-0 w-full bg-gradient-to-t from-[#313D49] via-[#313D49]/80 to-transparent h-[60%]" />
+      <div className="absolute w-full h-full pointer-events-none z-0">
       </div>
 
       <div className="w-full">
