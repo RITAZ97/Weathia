@@ -36,14 +36,14 @@ export default function ChatPage() {
       text: "What is the forecast and peak temperature for tomorrow in Melbourne? Are there any weather warnings?"
     },
     {
-      title: "Outfit Guide",
-      desc: "Recommend the best outfit based on current conditions.",
-      text: "Based on the current weather condition, what would be the ideal outfit recommendation for going out today in Melbourne?"
-    },
-    {
       title: "Layering & Gear Guide",
       desc: "Get clothing and gear advice based on wind chill and feels-like temp.",
       text: "Considering the current feels-like temperature, wind speed, and humidity in Melbourne today, what is the best layered outfit and gear recommendation for going out?"
+    },
+    {
+      title: "Wellness & Comfort",
+      desc: "Evaluate the current physical comfort level and environmental conditions.",
+      text: "Check the current comfort level in Melbourne and give any outdoor or indoor wellness advice?"
     }
   ];
 

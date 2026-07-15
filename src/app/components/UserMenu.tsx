@@ -185,7 +185,7 @@ export default function UserMenu() {
               </button>
               <div className="mt-4 pt-2.5 px-1 text-[12px] text-white leading-tight">
                 <p>
-                  <span className="text-[#2DEBC9] font-medium">Test Mode: </span> Use Link payment or standard Stripe test cards <span className="text-white/60 font-medium">to activate premium</span>. No real fees.
+                  <span className="text-[#2DEBC9] font-medium">Test Mode: </span> Use Link payment or standard Stripe test cards to activate premium. No real fees.
                 </p>
               </div>
             </div>
