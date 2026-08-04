@@ -48,3 +48,79 @@
     font-family: var(--font-inter);
   }
 }
+
+/* Google Places autocomplete dropdown */
+.pac-container {
+  margin-top: 0.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.875rem;
+  background: linear-gradient(180deg, rgba(49, 61, 73, 0.84), rgba(70, 88, 101, 0.72));
+  -webkit-backdrop-filter: blur(18px) saturate(125%);
+  backdrop-filter: blur(18px) saturate(125%);
+  box-shadow: 0 1rem 2.5rem rgba(20, 28, 36, 0.24);
+  font-family: var(--font-inter), sans-serif;
+}
+
+.pac-item {
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border-top: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+
+.pac-item:last-of-type {
+  border-bottom: 0;
+}
+
+.pac-item:hover,
+.pac-item-selected {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pac-item-query {
+  color: #fff;
+  font-size: 0.9375rem;
+}
+
+.pac-matched {
+  font-weight: 600;
+}
+
+.pac-icon {
+  margin-top: 0.125rem;
+  filter: grayscale(1) brightness(2.4);
+  opacity: 0.65;
+}
+
+.pac-logo::after {
+  content: "Powered by" !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  height: 2.375rem;
+  padding: 0.5rem 4.625rem 0.625rem 0.75rem;
+  background-image: url("https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png") !important;
+  background-repeat: no-repeat;
+  background-size: 55px 18px;
+  background-position: right 0.75rem center;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 0.6875rem;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+@media (max-width: 640px) {
+  .pac-container {
+    left: 50% !important;
+    width: min(320px, calc(100vw - 3rem)) !important;
+    max-width: none;
+    transform: translateX(-50%);
+  }
+}

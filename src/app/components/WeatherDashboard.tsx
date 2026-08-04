@@ -10,7 +10,7 @@ interface WeatherDashboardProps {
 
 const WeatherDashboard: React.FC<WeatherDashboardProps> = ({ weather, highLights }) => {
   return (
-    <div className="hidden mx-auto sm:block w-[92%] lg:w-[85%] max-w-[1320px] h-[668px] bg-[#6C6F75]/45 backdrop-blur-[8px] rounded-[25px]">
+    <div className="hidden mx-auto sm:block w-[92%] lg:w-[85%] max-w-[1320px] h-[668px] bottom-20 bg-[#6C6F75]/45 backdrop-blur-[8px] rounded-[25px]">
       <div className="w-full h-100 flex justify-between items-start px-8 xl:px-15 py-8">
 
         <div className="w-[45%] xl:w-[40%] h-full">

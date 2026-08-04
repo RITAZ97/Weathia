@@ -60,7 +60,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   }
 
   return (
-    <div className={`relative flex w-[320px] xl:w-[400px] justify-center items-center mt-2 h-[46px]
+    <div className={`relative flex w-[calc(100vw-3rem)] max-w-[320px] sm:w-[320px] sm:max-w-none xl:w-[400px] justify-center items-center mt-2 h-[46px]
       bg-[#F5F5F5]/25 backdrop-blur-[8px] text-[16px] z-[101] rounded-full border border-white/20 px-3 ${customClass}`}>
       
       <Autocomplete

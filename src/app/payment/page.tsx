@@ -28,7 +28,7 @@ function PaymentResultContent() {
           await update();
         }
       } catch (err) {
-        console.error("更新会员状态失败:", err);
+        console.error("failed to update statues:", err);
       }
     }
     

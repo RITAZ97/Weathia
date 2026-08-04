@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -67,8 +67,11 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
   const [modalMode, setModalMode] = useState<'toggle' | 'limitExceeded'>('toggle');
   const [isListOpen, setIsListOpen] = useState<boolean>(false);
   const [savedCities, setSavedCities] = useState<CityData[]>([]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   const isLoggedIn = status === 'authenticated';
   const isPremium = (session?.user as any)?.isPremium === true;
+  
   const getLimit = () => {
     if (!isLoggedIn) return 5; 
     if (isPremium) return 99;  
@@ -81,6 +84,22 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
     const saved = JSON.parse(localStorage.getItem('weather_cities') || '[]');
     setSavedCities(saved);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsListOpen(false);
+      }
+    };
+
+    if (isListOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isListOpen]);
 
   const isFavorited = savedCities.some(city => city.name === currentCity);
 
@@ -173,7 +192,7 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
   };
 
   return (
-    <div className="flex items-center gap-3 relative">
+    <div ref={containerRef} className="flex items-center gap-3 relative">
       <button className="hover:scale-110 transition-transform cursor-pointer" onClick={handleAction}>
         <svg
           className="w-6 h-6 sm:w-[28px] sm:h-[28px] overflow-visible"
@@ -213,29 +232,29 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
       />
 
       {isListOpen && (
-        <div className="absolute top-12 right-0 bg-[#222]/55 backdrop-blur-sm min-w-[280px] rounded-lg border border-white/10 shadow-2xl z-[100] overflow-hidden flex flex-col">
+        <div className="absolute top-12 right-0 bg-gradient-to-b from-[#313D49]/85 to-[#465865]/72 backdrop-blur-[18px] backdrop-saturate-125 min-w-[300px] rounded-xl border border-white/15 shadow-[0_16px_40px_rgba(20,28,36,0.24)] z-[100] overflow-hidden flex flex-col">
           <div className="max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 flex-1">
             {savedCities.length > 0 ? (
               savedCities.map((cityObj, index) => (
                 <div
                   key={`${cityObj.name}-${index}`}
-                  className="px-4 py-3 cursor-pointer flex justify-between items-center hover:bg-white/10 transition-colors border-b border-white/5 last:border-none text-white/90"
+                  className="px-4 py-3 cursor-pointer grid grid-cols-[minmax(0,1fr)_24px_48px_24px] items-center gap-x-3 hover:bg-white/10 transition-colors border-b border-white/10 last:border-none text-white/90"
                   onClick={() => {
                     onSelectCity(cityObj.name);
                     setIsListOpen(false);
                   }}
                 >
-                  <div className="flex items-center justify-between gap-4 overflow-hidden flex-1">
-                    <p className="text-[14px] truncate w-26">
+                  <div className="contents">
+                    <p className="min-w-0 text-[14px] truncate">
                       {cityObj.name}
                     </p>
-                    <div className="flex items-center gap-6">
+                    <div className="contents">
                       <img
                         src={`/icons/${cityObj.condition?.toLowerCase() || 'clear'}.svg`}
-                        className="w-4 h-auto object-contain"
+                        className="w-5 h-5 object-contain justify-self-center"
                         alt="weather"
                       />
-                      <span className="text-[14px] text-white/70">{cityObj.temp}°</span>
+                      <span className="text-[14px] text-white/70 text-right tabular-nums whitespace-nowrap">{cityObj.temp}°</span>
                     </div>
                   </div>
                   
@@ -246,7 +265,7 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
                       setSavedCities(updated);
                       localStorage.setItem('weather_cities', JSON.stringify(updated));
                     }}
-                    className="text-white/80 hover:text-[#ff4d4d] transition-colors text-xl leading-none ml-2 px-1"
+                    className="text-white/80 hover:text-[#ff4d4d] transition-colors text-xl leading-none justify-self-center"
                   >
                     <svg
                       className="w-5 h-5"

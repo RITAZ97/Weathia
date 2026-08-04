@@ -54,8 +54,6 @@ const MobileHourlyForecast: React.FC<MobileHourlyForecastProps> = ({ weather }) 
     }
   };
 
-
-
   const hourlyData = weather?.hourly?.slice(0, maxAllowedHours).map((item, index) => {
     const itemDate = new Date(item.dt * 1000);
     const itemDateStr = itemDate.toLocaleDateString();
@@ -131,13 +129,11 @@ const MobileHourlyForecast: React.FC<MobileHourlyForecastProps> = ({ weather }) 
             </div>
           )}
 
-          {/* 💡 状态2：已登录但不是 Premium，显示升级解锁 48h 提示 */}
           {isLoggedIn && !isPremium && (
             <div
               className="flex-none w-[35%] snap-start flex flex-col items-center justify-center border border-dashed border-[#04DBAC]/40 rounded-xl ml-2 p-2 bg-black/20 cursor-pointer hover:bg-[#04DBAC]/5 transition-all animate-fadeIn"
               onClick={handleUpgrade}
             >
-              {/* 💡 重点：这里的圆圈完全套用你之前满意的 3px #04DBAC 边框与缩放逻辑，完美呼应前面的 id=0/24 */}
               <div
                 className="w-12 h-12 rounded-full flex justify-center items-center bg-support2/10 lg:bg-support2 transition-all duration-300 mb-2"
               >

@@ -1,0 +1,88 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 1.5rem;
+  background: rgba(24, 34, 44, 0.58);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.loader {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(5.5rem, 20vw, 8rem);
+  aspect-ratio: 1;
+}
+
+.halo {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(45, 235, 201, 0.3);
+  border-radius: 9999px;
+  box-shadow:
+    0 0 2rem rgba(45, 235, 201, 0.2),
+    inset 0 0 1.5rem rgba(45, 235, 201, 0.08);
+  animation: haloPulse 2.2s ease-in-out infinite;
+}
+
+.orbit {
+  position: absolute;
+  inset: 0.5rem;
+  border: 2px solid transparent;
+  border-top-color: #2debc9;
+  border-right-color: rgba(45, 235, 201, 0.24);
+  border-radius: 9999px;
+  animation: orbitSpin 2.4s linear infinite;
+}
+
+.logo {
+  width: 52%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 0.65rem rgba(45, 235, 201, 0.45));
+  animation: logoBreathe 2.2s ease-in-out infinite;
+}
+
+.logo path {
+  fill: none;
+  stroke: #2debc9;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 70;
+  animation: strokeDraw 2.2s ease-in-out infinite;
+}
+
+@keyframes orbitSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes haloPulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes logoBreathe {
+  0%, 100% { opacity: 0.72; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+@keyframes strokeDraw {
+  0% { stroke-dashoffset: 70; }
+  45%, 65% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -70; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .halo,
+  .orbit,
+  .logo,
+  .logo path {
+    animation: none;
+  }
+}

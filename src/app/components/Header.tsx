@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
 import { formatTemperature, formatDate } from '@/utils/temp_date';
 import SavedBox from './SavedBox';
 import { WeatherData, WeatherHighlights } from '@/types/weather';
 import UserMenu from './UserMenu';
+import LoadingOverlay from './LoadingOverlay';
 
 interface HeaderProps {
   setLocation: (location: string) => void;
@@ -24,13 +25,29 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  if (loading) return <div className="text-center py-10 text-white">Loading weather data...</div>;
+  useEffect(() => {
+  if (isSearchOpen) {
+    // 隐藏主页面的滚动条并禁止滚动
+    document.body.style.overflow = 'hidden';
+  } else {
+    // 关闭时恢复
+    document.body.style.overflow = '';
+  }
+
+  // 防止组件卸载时状态没还原
+  return () => {
+    document.body.style.overflow = '';
+  };
+}, [isSearchOpen]);
+
+  if (loading) return <LoadingOverlay />;
   if (error) return (
     <div className="p-4 text-red-500 bg-red-100 rounded-md mx-auto w-[92%] mt-4">
       Error: {error}
     </div>
   );
   if (!weather) return null;
+
 
   return (
     <div className='w-full text-white mx-auto'>
@@ -59,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({
                 </button>
                 
                 {isSearchOpen && (
-                  <div className="fixed inset-0 z-[100] bg-gray-900 flex flex-col px-6 pt-6">
+                  <div className="fixed inset-0 z-[100] bg-gray-900 flex flex-col px-6 pt-6 h-dvh overflow-hidden">
                     <button
                       onClick={() => setIsSearchOpen(false)}
                       className="flex justify-end mb-8"
