@@ -7,9 +7,9 @@ import { Interface } from "readline";
 const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 import { WeatherData, WeatherHighlights, DailyForecast } from "@/types/weather";
 
-const useWeather = (initialLocation: string = "Melbourne,AU") => {
+const useWeather = (initialLocation?: string) => {
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [location, setLocation] = useState<string>(initialLocation);
+  const [location, setLocation] = useState<string>(initialLocation ?? "");
   const [forecast, setForecast] = useState<any[] | null>(null);;
   const [highLights, setHighLights] = useState<WeatherHighlights | null>(null);
   const [cities, setCities] = useState<string[]>([]);
@@ -82,11 +82,42 @@ const useWeather = (initialLocation: string = "Melbourne,AU") => {
   };
 
   useEffect(() => {
+    if (initialLocation) return;
+
+    let cancelled = false;
+
+    const detectLocation = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/location', { cache: 'no-store' });
+        const result = await response.json();
+
+        if (!response.ok || typeof result.city !== 'string') {
+          throw new Error(result.error || 'Unable to detect your city');
+        }
+
+        if (!cancelled) setLocation(result.city);
+      } catch (error: any) {
+        if (!cancelled) {
+          setError(error.message || 'Unable to detect your city');
+          setLoading(false);
+        }
+      }
+    };
+
+    detectLocation();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [initialLocation]);
+
+  useEffect(() => {
     fetchMainWeatherData();
   }, [location]);
 
   useEffect(() => {
-    fetchCitiesWeatherData();
+    if (cities.length > 0) fetchCitiesWeatherData();
   }, [cities]);
 
   return {

@@ -27,14 +27,10 @@ const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
   if (isSearchOpen) {
-    // 隐藏主页面的滚动条并禁止滚动
     document.body.style.overflow = 'hidden';
   } else {
-    // 关闭时恢复
     document.body.style.overflow = '';
   }
-
-  // 防止组件卸载时状态没还原
   return () => {
     document.body.style.overflow = '';
   };

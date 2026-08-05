@@ -8,6 +8,13 @@ interface Message {
   content: string;
 }
 
+const renderInlineMarkdown = (content: string) =>
+  content.split(/(\*\*[^*]+\*\*)/g).map((part, index) =>
+    part.startsWith('**') && part.endsWith('**')
+      ? <strong key={index}>{part.slice(2, -2)}</strong>
+      : part
+  );
+
 export default function ChatPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -31,19 +38,19 @@ export default function ChatPage() {
 
   const samplePrompts = [
     {
-      title: "Tomorrow's Peak",
-      desc: "What's the max temperature tomorrow? Do I need an umbrella?",
-      text: "What is the forecast and peak temperature for tomorrow in Melbourne? Are there any weather warnings?"
+      title: "Tomorrow's Outlook",
+      desc: "See tomorrow's high, low, rain chance, and key weather changes.",
+      text: "What are tomorrow's high and low temperatures at my current location? Do I need an umbrella, and are there any weather warnings?"
     },
     {
       title: "Layering & Gear Guide",
       desc: "Get clothing and gear advice based on wind chill and feels-like temp.",
-      text: "Considering the current feels-like temperature, wind speed, and humidity in Melbourne today, what is the best layered outfit and gear recommendation for going out?"
+      text: "Considering today's high and low, feels-like temperature, wind speed, humidity, and UV at my current location, what layered outfit and gear should I choose?"
     },
     {
       title: "Wellness & Comfort",
       desc: "Evaluate the current physical comfort level and environmental conditions.",
-      text: "Check the current comfort level in Melbourne and give any outdoor or indoor wellness advice?"
+      text: "Check the current comfort level at my location and give outdoor and indoor wellness advice."
     }
   ];
 
@@ -91,7 +98,7 @@ export default function ChatPage() {
 
       <button
         onClick={handleCloseChat}
-        className="absolute mt-4 ml-2 p-2 rounded-xl bg-white/5 text-white/40 border border-white/5 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-95 cursor-pointer z-50 flex items-center justify-center"
+        className="absolute top-4 right-4 p-2 rounded-xl bg-white/5 text-white/40 border border-white/5 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition-all active:scale-95 cursor-pointer z-50 flex items-center justify-center"
         title="exit the chat"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -147,12 +154,12 @@ export default function ChatPage() {
                   className={`flex  ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-150`}
                 >
                   <div
-                    className={`max-w-[500px] h-auto justify-center items-center p-3 text-sm rounded-xl leading-relaxed break-words ${msg.role === 'user'
+                    className={`max-w-[500px] h-auto justify-center items-center p-3 text-sm rounded-xl leading-relaxed break-words whitespace-pre-wrap ${msg.role === 'user'
                       ? 'text-[#2DEBC9] font-medium rounded-tr-none'
                       : 'bg-white/5 border border-white/10 text-white rounded-tl-none'
                       }`}
                   >
-                    {msg.content}
+                    {renderInlineMarkdown(msg.content)}
                   </div>
                 </div>
               ))}
