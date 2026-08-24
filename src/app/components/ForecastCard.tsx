@@ -25,29 +25,32 @@ const ForecastCard: React.FC<ForecastCardProps> = ({ weather }) => {
           <h2 className="text-secondary font-semibold pt-6 pb-3 text-center">7 Days Forecast</h2>
           
           {weather.daily.slice(0, 7).map((item, id) => (
-            <div key={item.dt} className="flex justify-around items-center mx-2 py-3 gap-[20px] border-b border-support4 last:border-0">
-              <h3 className="w-18 text-ternary text-[14px] font-medium">
-                {id === 0 ? "Today" : getWeekday(item.dt)}
+            <div
+              key={item.dt}
+              className="grid grid-cols-[64px_28px_minmax(46px,1fr)_42px_42px] items-center gap-x-1 py-3 border-b border-support4 last:border-0"
+            >
+              <h3 className="min-w-0 text-ternary text-[14px] font-medium whitespace-nowrap">
+                {id === 0 ? "Today" : getWeekday(item.dt).slice(0, 3)}
               </h3>
               
               <img
                 src={`/icons/${item.weather[0].main.toLowerCase()}.svg`}
-                className="w-5 h-auto object-contain"
+                className="w-5 h-5 object-contain justify-self-center"
                 alt={item.weather[0].description}
               />
               
-              <p className="w-14.5 text-ternary font-medium text-[13px] text-center">
+              <p className="min-w-0 truncate text-ternary font-medium text-[14px] text-center">
                 {item.weather[0].main}
               </p>
               
-              <div className="w-9 flex justify-center items-center gap-[4px] text-ternary font-medium text-center">
-                <img src="/icons/up_gray.svg" className="w-[6px] lg:w-[8px] h-auto object-contain" alt="high" />
-                <p className='text-[13px]'>{Math.round(item.temp.max)}°</p>
+              <div className="flex translate-x-0.5 items-center justify-end gap-0.5 text-ternary font-medium tabular-nums">
+                <img src="/icons/up_gray.svg" className="w-[7px] h-3 object-contain" alt="high" />
+                <p className="text-[13px] whitespace-nowrap">{Math.round(item.temp.max)}°</p>
               </div>
               
-              <div className="w-9 flex justify-center items-center gap-[4px] text-ternary font-medium text-center">
-                <img src="/icons/down_gray.svg" className="w-[6px] h-auto object-contain" alt="low" />
-                <p className='text-[13px]'>{Math.round(item.temp.min)}°</p>
+              <div className="flex items-center justify-start gap-0.5 pl-3 text-ternary font-medium tabular-nums">
+                <img src="/icons/down_gray.svg" className="w-[7px] h-3 object-contain" alt="low" />
+                <p className="text-[13px] whitespace-nowrap">{Math.round(item.temp.min)}°</p>
               </div>
             </div>
           ))}

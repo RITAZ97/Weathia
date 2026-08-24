@@ -64,7 +64,8 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
   const { data: session, status } = useSession();
   
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalMode, setModalMode] = useState<'toggle' | 'limitExceeded'>('toggle');
+  const [modalMode, setModalMode] = useState<'toggle' | 'delete' | 'limitExceeded'>('toggle');
+  const [cityPendingDelete, setCityPendingDelete] = useState<string | null>(null);
   const [isListOpen, setIsListOpen] = useState<boolean>(false);
   const [savedCities, setSavedCities] = useState<CityData[]>([]);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -138,6 +139,27 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
       setSavedCities(updated);
       localStorage.setItem('weather_cities', JSON.stringify(updated));
     }
+    setIsModalOpen(false);
+  };
+
+  const requestCityDelete = (cityName: string) => {
+    setCityPendingDelete(cityName);
+    setModalMode('delete');
+    setIsModalOpen(true);
+  };
+
+  const confirmCityDelete = () => {
+    if (!cityPendingDelete) return;
+
+    const updated = savedCities.filter(city => city.name !== cityPendingDelete);
+    setSavedCities(updated);
+    localStorage.setItem('weather_cities', JSON.stringify(updated));
+    setCityPendingDelete(null);
+    setIsModalOpen(false);
+  };
+
+  const closeModal = () => {
+    setCityPendingDelete(null);
     setIsModalOpen(false);
   };
 
@@ -219,12 +241,14 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
 
       <ConfirmModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={toggleCity}
-        showCancel={modalMode === 'toggle'}
+        onClose={closeModal}
+        onConfirm={modalMode === 'delete' ? confirmCityDelete : toggleCity}
+        showCancel={modalMode !== 'limitExceeded'}
         message={
           modalMode === 'limitExceeded'
             ? `You've reached the limit of ${limit} saved cities. Please ${isLoggedIn ? 'upgrade to Premium' : 'log in'} to save more locations!`
+            : modalMode === 'delete'
+            ? `Do you want to remove ${cityPendingDelete} from your list?`
             : isFavorited
             ? `Do you want to remove ${currentCity} from your list?`
             : `Do you want to save ${currentCity} to your list?`
@@ -258,12 +282,12 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
                     </div>
                   </div>
                   
-                  <div
+                  <button
+                    type="button"
+                    aria-label={`Remove ${cityObj.name} from saved cities`}
                     onClick={(e: React.MouseEvent) => {
                       e.stopPropagation();
-                      const updated = savedCities.filter(c => c.name !== cityObj.name);
-                      setSavedCities(updated);
-                      localStorage.setItem('weather_cities', JSON.stringify(updated));
+                      requestCityDelete(cityObj.name);
                     }}
                     className="text-white/80 hover:text-[#ff4d4d] transition-colors text-xl leading-none justify-self-center"
                   >
@@ -276,7 +300,7 @@ const SavedBox: React.FC<SavedBoxProps> = ({ currentCity, onSelectCity, weather 
                     >
                       <path d="M18 6L6 18M6 6l12 12" />
                     </svg>
-                  </div>
+                  </button>
                 </div>
               ))
             ) : (
